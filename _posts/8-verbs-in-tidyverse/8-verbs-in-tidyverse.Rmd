@@ -4,7 +4,7 @@ description: |
   Tidyverse Series #1 - Data transformation and summarization are the foundation
   of any data analyses. In our R community, fortunately, we have a whole set of
   tools in tidyverse to facilitate this process. This article will be the 
-  first of a series of tidyverse tutorials that we are/will be using for our 
+  first of a series of tidyverse tutorials that we are using for our 
   internal training. It covers the 8 fundamental verbs related to data 
   transformation and summarization in dplyr and tidyr. 
 author:
@@ -29,13 +29,15 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 This post is the first of a series of `tidyverse` tutorials we are using for our staff training. It will be introduce the basic idea of how to use `tidyverse` to do data transformation and analyses (more specifically, it's talking about the major functions in `dplyr` and `tidyr`). In the end, you will learn how to generate a summary stats table using the tools provided in `tidyverse`.
 
 # "tidy data"
-Before we get started, I would like to spend a little time on the concept of tidy data. I think even if you are not using R (python, matlab or even Excel are always available there), everyone who needs to deal with data should read this [tidy data](http://vita.had.co.nz/papers/tidy-data.pdf) paper. If you haven't read it before, please stop reading this blog post right now and start to read that paper instead (don't forget to come back ;) ). Basically, Hadley was saying even for the same piece of information, there are a number of ways to organize the data differently. Some formats might be good for human to process the information but for machines and for data science languages like R or python, the best way to organize data is the "tidy" format, where:
+Before we get started, I would like to spend a little time on the concept of tidy data. I think even if you are not using R (python, matlab or even Excel are always available there), everyone who needs to deal with data should read this [tidy data](http://vita.had.co.nz/papers/tidy-data.pdf) paper. If you haven't read it before, please stop reading this blog post right now and start to read that paper instead (don't forget to come back :P). Basically, Hadley was saying even for the same piece of information, there are a number of ways to organize the data differently. Some formats might be good for human to process the information but for machines and for data science languages like R or python, the best way to organize data is the "tidy" format, where:
 
 - Each variable has a column
 - Each observation has a row
 
 # Introduction to `tidyverse`
-The term `tidyverse` was announced in 2016 when Hadley Wickham used it to replace the community-invented term "hadleyverse". It includes a collection of R packages that can largely improve the analytical workflow in R. Basically, this packagesCore packages in `tidyverse` includes `dplyr`, `tidyr`, `ggplot2`, `readr`, `purrr`, etc.. Please refer to their [home page](https://www.tidyverse.org/packages/) for details. In this post, we will only talk about `dplyr` and `tidyr` to get you started. 
+The term `tidyverse` was announced in 2016 when Hadley Wickham used it to replace the community-invented term "hadleyverse". It includes a collection of R packages that you will be using everyday. Core packages in `tidyverse` includes `dplyr`, `tidyr`, `ggplot2`, `readr`, `purrr`, etc.. You can refer to their [home page](https://www.tidyverse.org/packages/) for details. Basically, the package `tidyverse` was created for everyone's convenience. In the past, you need to install/load a bunch of packages from this collection. Now you only need to install/load one. 
+
+In this post, we will only talk about `dplyr` and `tidyr` to get you started. 
 
 # 8 verbs in `tidyverse`
 `Tidyverse` is easy to learn if you remember the following 8 verbs. 

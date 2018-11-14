@@ -5,8 +5,8 @@ account: haozhu
 server: ifar-connect.hsl.harvard.edu
 hostUrl: https://ifar-connect.hsl.harvard.edu/__api__
 appId: 131
-bundleId: 603
+bundleId: 605
 url: https://ifar-connect.hsl.harvard.edu:443/content/131/
-when: 1542162078.00053
+when: 1542169589.37728
 asMultiple: FALSE
 asStatic: TRUE

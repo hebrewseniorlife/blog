@@ -2,7 +2,7 @@
   {
     "path": "posts/8-verbs-in-tidyverse/",
     "title": "8 verbs in tidyverse",
-    "description": "Tidyverse Series #1 - Data transformation and summarization are the foundation\nof any data analyses. In our R community, fortunately, we have a whole set of\ntools in tidyverse to facilitate this process. This article will be the \nfirst of a series of tidyverse tutorials that we are/will be using for our \ninternal training. It covers the 8 fundamental verbs related to data \ntransformation and summarization in dplyr and tidyr.",
+    "description": "Tidyverse Series #1 - Data transformation and summarization are the foundation\nof any data analyses. In our R community, fortunately, we have a whole set of\ntools in tidyverse to facilitate this process. This article will be the \nfirst of a series of tidyverse tutorials that we are using for our \ninternal training. It covers the 8 fundamental verbs related to data \ntransformation and summarization in dplyr and tidyr.",
     "author": [
       {
         "name": "Hao Zhu",
@@ -16,6 +16,6 @@
     "date": "2018-11-13",
     "categories": [],
     "preview": "posts/8-verbs-in-tidyverse/images/tidyverse-default.png",
-    "last_modified": "2018-11-13T23:12:52-05:00"
+    "last_modified": "2018-11-13T23:25:58-05:00"
   }
 ]
