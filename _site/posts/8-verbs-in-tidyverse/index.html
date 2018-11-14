@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="radix" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+  <!--radix_placeholder_meta_tags-->
+<title>MIFA Data Science Blog: 8 verbs in tidyverse</title>
+
+<meta property="description" itemprop="description" content="Tidyverse Series #1 - Data transformation and summarization are the foundation&#10;of any data analyses. In our R community, fortunately, we have a whole set of&#10;tools in tidyverse to facilitate this process. This article will be the &#10;first of a series of tidyverse tutorials that we are/will be using for our &#10;internal training. It covers the 8 fundamental verbs related to data &#10;transformation and summarization in dplyr and tidyr."/>
+
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2018-11-13"/>
+<meta property="article:created" itemprop="dateCreated" content="2018-11-13"/>
+<meta name="article:author" content="Hao Zhu"/>
+<meta name="article:author" content="Thomas Travison"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="MIFA Data Science Blog: 8 verbs in tidyverse"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="Tidyverse Series #1 - Data transformation and summarization are the foundation&#10;of any data analyses. In our R community, fortunately, we have a whole set of&#10;tools in tidyverse to facilitate this process. This article will be the &#10;first of a series of tidyverse tutorials that we are/will be using for our &#10;internal training. It covers the 8 fundamental verbs related to data &#10;transformation and summarization in dplyr and tidyr."/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="MIFA Data Science Blog"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary"/>
+<meta property="twitter:title" content="MIFA Data Science Blog: 8 verbs in tidyverse"/>
+<meta property="twitter:description" content="Tidyverse Series #1 - Data transformation and summarization are the foundation&#10;of any data analyses. In our R community, fortunately, we have a whole set of&#10;tools in tidyverse to facilitate this process. This article will be the &#10;first of a series of tidyverse tutorials that we are/will be using for our &#10;internal training. It covers the 8 fundamental verbs related to data &#10;transformation and summarization in dplyr and tidyr."/>
+
+<!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","preview"]}},"value":[{"type":"character","attributes":{},"value":["8 verbs in tidyverse"]},{"type":"character","attributes":{},"value":["Tidyverse Series #1 - Data transformation and summarization are the foundation\nof any data analyses. In our R community, fortunately, we have a whole set of\ntools in tidyverse to facilitate this process. This article will be the \nfirst of a series of tidyverse tutorials that we are/will be using for our \ninternal training. It covers the 8 fundamental verbs related to data \ntransformation and summarization in dplyr and tidyr."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Hao Zhu"]},{"type":"character","attributes":{},"value":["https://haozhu233.github.io/"]},{"type":"character","attributes":{},"value":["Markus Institute for Aging"]},{"type":"character","attributes":{},"value":["https://www.marcusinstituteforaging.org/"]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Thomas Travison"]},{"type":"character","attributes":{},"value":["Markus Institute for Aging"]},{"type":"character","attributes":{},"value":["https://www.marcusinstituteforaging.org/"]}]}]},{"type":"character","attributes":{},"value":["11-13-2018"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["radix::radix_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["images/tidyverse-default.png"]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["8-verbs-in-tidyverse_files/bowser-1.9.3/bowser.min.js","8-verbs-in-tidyverse_files/bsTable-3.3.7/bootstrapTable.min.css","8-verbs-in-tidyverse_files/distill-2.2.21/template.v2.js","8-verbs-in-tidyverse_files/font-awesome-5.3.1/css/all.css","8-verbs-in-tidyverse_files/font-awesome-5.3.1/css/all.min.css","8-verbs-in-tidyverse_files/font-awesome-5.3.1/css/v4-shims.css","8-verbs-in-tidyverse_files/font-awesome-5.3.1/css/v4-shims.min.css","8-verbs-in-tidyverse_files/font-awesome-5.3.1/webfonts/fa-brands-400.eot","8-verbs-in-tidyverse_files/font-awesome-5.3.1/webfonts/fa-brands-400.svg","8-verbs-in-tidyverse_files/font-awesome-5.3.1/webfonts/fa-brands-400.ttf","8-verbs-in-tidyverse_files/font-awesome-5.3.1/webfonts/fa-brands-400.woff","8-verbs-in-tidyverse_files/font-awesome-5.3.1/webfonts/fa-brands-400.woff2","8-verbs-in-tidyverse_files/font-awesome-5.3.1/webfonts/fa-regular-400.eot","8-verbs-in-tidyverse_files/font-awesome-5.3.1/webfonts/fa-regular-400.svg","8-verbs-in-tidyverse_files/font-awesome-5.3.1/webfonts/fa-regular-400.ttf","8-verbs-in-tidyverse_files/font-awesome-5.3.1/webfonts/fa-regular-400.woff","8-verbs-in-tidyverse_files/font-awesome-5.3.1/webfonts/fa-regular-400.woff2","8-verbs-in-tidyverse_files/font-awesome-5.3.1/webfonts/fa-solid-900.eot","8-verbs-in-tidyverse_files/font-awesome-5.3.1/webfonts/fa-solid-900.svg","8-verbs-in-tidyverse_files/font-awesome-5.3.1/webfonts/fa-solid-900.ttf","8-verbs-in-tidyverse_files/font-awesome-5.3.1/webfonts/fa-solid-900.woff","8-verbs-in-tidyverse_files/font-awesome-5.3.1/webfonts/fa-solid-900.woff2","8-verbs-in-tidyverse_files/jquery-1.11.3/jquery.min.js","8-verbs-in-tidyverse_files/kePrint-0.0.1/kePrint.js","8-verbs-in-tidyverse_files/pagedtable-1.1/css/pagedtable.css","8-verbs-in-tidyverse_files/pagedtable-1.1/js/pagedtable.js","8-verbs-in-tidyverse_files/webcomponents-2.0.0/webcomponents.js","images/tidyverse-default.png"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.radix-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.radix-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #455a64;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.radix-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.radix-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .radix-site-nav {
+    display: none;
+  }
+}
+
+.radix-site-header {
+
+}
+
+.radix-site-footer {
+
+}
+
+
+/* Site Header */
+
+.radix-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.radix-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .radix-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.radix-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.radix-site-header a,
+.radix-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.radix-site-header .title {
+  font-size: 18px;
+}
+
+.radix-site-header .logo {
+  padding: 0;
+}
+
+.radix-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.radix-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .radix-site-header .logo img {
+    display: inline-block;
+  }
+  .radix-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .radix-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .radix-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.radix-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .radix-site-header a, .radix-site-header .nav-dropdown  {display: none;}
+  .radix-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .radix-site-header .title {
+    margin-left: 0;
+  }
+  .radix-site-header .nav-right {
+    margin-right: 0;
+  }
+  .radix-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .radix-site-header.responsive {position: relative;}
+  .radix-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .radix-site-header.responsive a,
+  .radix-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .radix-site-header.responsive .nav-left,
+  .radix-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .radix-site-header.responsive .nav-dropdown {float: none;}
+  .radix-site-header.responsive .nav-dropdown-content {position: relative;}
+  .radix-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.radix-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+</style>
+
+<link href="../../site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet"/>
+<script src="../../site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="../../site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for table of contents */
+
+.d-toc {
+  color: rgba(0,0,0,0.8);
+  font-size: 0.8em;
+  line-height: 1em;
+}
+
+.d-toc-header {
+  font-size: 0.6rem;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 1.3em;
+}
+
+.d-toc a {
+  border-bottom: none;
+}
+
+.d-toc ul {
+  padding-left: 0;
+}
+
+.d-toc li>ul {
+  padding-top: 0.8em;
+  padding-left: 16px;
+  margin-bottom: 0.6em;
+}
+
+.d-toc ul,
+.d-toc li {
+  list-style-type: none;
+}
+
+.d-toc li {
+  margin-bottom: 0.9em;
+}
+
+.d-toc-separator {
+  margin-top: 20px;
+  margin-bottom: 2em;
+}
+
+.d-article-with-toc {
+  border-top: none;
+  padding-top: 0;
+}
+
+
+
+/* Tweak code blocks (note that this CSS is repeated above in an injection
+   into the d-code shadow dom) */
+
+pre.d-code code.d-code {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+pre.text-output {
+
+  font-size: 12px;
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+@media(min-width: 768px) {
+pre.d-code code.d-code  {
+    padding-left: 18px;
+    font-size: 14px;
+}
+pre.text-output {
+  font-size: 14px;
+}
+}
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // create d-bibliography
+  var bibliography = $('<d-bibliography></d-bibliography>');
+  $('#distill-bibliography').wrap(bibliography);
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace citations with <d-cite>
+  $('.citation').each(function(i, val) {
+    appendix = true;
+    var cites = $(this).attr('data-cites').split(" ");
+    var dt_cite = $('<d-cite></d-cite>');
+    dt_cite.attr('key', cites.join());
+    $(this).replaceWith(dt_cite);
+  });
+  // remove refs
+  $('#refs').remove();
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.text();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.text(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-toc a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // replace code blocks with d-code
+  $('pre>code').each(function(i, val) {
+    var code = $(this);
+    var pre = code.parent();
+    var clz = "";
+    var language = pre.attr('class');
+    if (language) {
+      if ($.inArray(language, ["r", "cpp", "c", "java"]) != -1)
+        language = "clike";
+      language = ' language="' + language + '"';
+      var dt_code = $('<d-code block' + language + clz + '></d-code>');
+      dt_code.text(code.text());
+      pre.replaceWith(dt_code);
+    } else {
+      code.addClass('text-output').unwrap().changeElementType('pre');
+    }
+  });
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('d-code, pre.text-output, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // table of contents
+    if (have_authors) // adjust border if we are in authors
+      $('.d-toc').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // inject pre code styles (can't do this with a global stylesheet b/c a shadow root is used)
+    $('d-code').each(function(i, val) {
+      var style = document.createElement('style');
+      style.innerHTML = 'pre code { padding-left: 10px; font-size: 12px; border-left: 2px solid rgba(0,0,0,0.1); } ' +
+                        '@media(min-width: 768px) { pre code { padding-left: 18px; font-size: 14px; } }';
+      if (this.shadowRoot)
+        this.shadowRoot.appendChild(style);
+    });
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-toc-header').remove();
+  $('.d-toc').remove();
+  $('.d-toc-separator').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    $(this).find('img, .html-widget').css('width', '100%');
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.radix-site-header a').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<!--/radix_placeholder_distill-->
+  <link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+  <script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+  <link href="../../site_libs/font-awesome-5.3.1/css/all.min.css" rel="stylesheet" />
+  <link href="../../site_libs/font-awesome-5.3.1/css/v4-shims.min.css" rel="stylesheet" />
+  <script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="../../site_libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+  <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"8 verbs in tidyverse","description":"Tidyverse Series #1 - Data transformation and summarization are the foundation\nof any data analyses. In our R community, fortunately, we have a whole set of\ntools in tidyverse to facilitate this process. This article will be the \nfirst of a series of tidyverse tutorials that we are/will be using for our \ninternal training. It covers the 8 fundamental verbs related to data \ntransformation and summarization in dplyr and tidyr.","authors":[{"author":"Hao Zhu","authorURL":"https://haozhu233.github.io/","affiliation":"Markus Institute for Aging","affiliationURL":"https://www.marcusinstituteforaging.org/"},{"author":"Thomas Travison","authorURL":"#","affiliation":"Markus Institute for Aging","affiliationURL":"https://www.marcusinstituteforaging.org/"}],"publishedDate":"2018-11-13T00:00:00.000-05:00","citationText":"Zhu & Travison, 2018"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="radix-site-nav radix-site-header">
+<div class="nav-left">
+<a href="../../index.html" class="title">MIFA Data Science Blog</a>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../about.html">About</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>8 verbs in tidyverse</h1>
+<p>Tidyverse Series #1 - Data transformation and summarization are the foundation of any data analyses. In our R community, fortunately, we have a whole set of tools in tidyverse to facilitate this process. This article will be the first of a series of tidyverse tutorials that we are/will be using for our internal training. It covers the 8 fundamental verbs related to data transformation and summarization in dplyr and tidyr.</p>
+</div>
+
+<div class="d-byline">
+  Hao Zhu <a href="https://haozhu233.github.io/" class="uri">https://haozhu233.github.io/</a> (Markus Institute for Aging)<a href="https://www.marcusinstituteforaging.org/" class="uri">https://www.marcusinstituteforaging.org/</a>
+  
+,   Thomas Travison  (Markus Institute for Aging)<a href="https://www.marcusinstituteforaging.org/" class="uri">https://www.marcusinstituteforaging.org/</a>
+  
+<br/>11-13-2018
+</div>
+
+<div class="d-article">
+<p>This post is the first of a series of <code>tidyverse</code> tutorials we are using for our staff training. It will be introduce the basic idea of how to use <code>tidyverse</code> to do data transformation and analyses (more specifically, it’s talking about the major functions in <code>dplyr</code> and <code>tidyr</code>). In the end, you will learn how to generate a summary stats table using the tools provided in <code>tidyverse</code>.</p>
+<h1 id="tidy-data">“tidy data”</h1>
+<p>Before we get started, I would like to spend a little time on the concept of tidy data. I think even if you are not using R (python, matlab or even Excel are always available there), everyone who needs to deal with data should read this <a href="http://vita.had.co.nz/papers/tidy-data.pdf">tidy data</a> paper. If you haven’t read it before, please stop reading this blog post right now and start to read that paper instead (don’t forget to come back ;) ). Basically, Hadley was saying even for the same piece of information, there are a number of ways to organize the data differently. Some formats might be good for human to process the information but for machines and for data science languages like R or python, the best way to organize data is the “tidy” format, where:</p>
+<ul>
+<li>Each variable has a column</li>
+<li>Each observation has a row</li>
+</ul>
+<h1 id="introduction-to-tidyverse">Introduction to <code>tidyverse</code></h1>
+<p>The term <code>tidyverse</code> was announced in 2016 when Hadley Wickham used it to replace the community-invented term “hadleyverse”. It includes a collection of R packages that can largely improve the analytical workflow in R. Basically, this packagesCore packages in <code>tidyverse</code> includes <code>dplyr</code>, <code>tidyr</code>, <code>ggplot2</code>, <code>readr</code>, <code>purrr</code>, etc.. Please refer to their <a href="https://www.tidyverse.org/packages/">home page</a> for details. In this post, we will only talk about <code>dplyr</code> and <code>tidyr</code> to get you started.</p>
+<h1 id="verbs-in-tidyverse">8 verbs in <code>tidyverse</code></h1>
+<p><code>Tidyverse</code> is easy to learn if you remember the following 8 verbs.</p>
+<p>From <code>dplyr</code>:</p>
+<ul>
+<li><code>select</code>: select out <strong>columns</strong>.</li>
+<li><code>filter</code>: filter out <strong>rows</strong>.</li>
+<li><code>mutate</code>: add/edit existing <strong>columns</strong>.</li>
+<li><code>summarize</code>: generate a <strong>new</strong> table/vector that summarize the input.</li>
+<li><code>group_by</code>: perform the above actions (&amp; other actions) <strong>by grouping variables</strong>.</li>
+</ul>
+<p>From <code>tidyr</code>:</p>
+<ul>
+<li><code>gather</code>: transform data from <strong>wide to tall</strong> (imagine you grab a bunch of branches).</li>
+<li><code>spread</code>: transform data from <strong>tall to wide</strong> (imagine you release your hand and the branches falls off).</li>
+<li><code>separate</code>: <strong>separate</strong> one column into two/several by symbols(default) or others.</li>
+</ul>
+<p>Out of these 8 verbs, there are 3 pairs that does similar kind of things as showing below. <code>group_by</code> and <code>separate</code> are kind of stand alone. I found it’s easy to remember them in this way.</p>
+<ul>
+<li>select &amp; filter: reduce size.</li>
+<li>mutate &amp; summarize: generate new data or summary.</li>
+<li>gather &amp; spread: data transformation.</li>
+</ul>
+<p>Once you mastered these 8 verbs, you could say you can handle at least 80% of your normal tasks.</p>
+<h1 id="examples">Examples</h1>
+<p>In this post, we will use <code>iris</code> as an example.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+library(rmarkdown)
+library(kableExtra)
+options(kableExtra.html.bsTable = T)  
+
+qtable &lt;- function(x) {
+  kable(x) %&gt;%
+    kable_styling(c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;), full_width = F,
+                  position = &quot;left&quot;)
+}
+
+paged_table(iris, options = list(rows.print = 6))</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[5],"type":["fctr"],"align":["left"]}],"data":[{"1":"5.1","2":"3.5","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.9","2":"3.0","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.7","2":"3.2","3":"1.3","4":"0.2","5":"setosa"},{"1":"4.6","2":"3.1","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.6","3":"1.4","4":"0.2","5":"setosa"},{"1":"5.4","2":"3.9","3":"1.7","4":"0.4","5":"setosa"},{"1":"4.6","2":"3.4","3":"1.4","4":"0.3","5":"setosa"},{"1":"5.0","2":"3.4","3":"1.5","4":"0.2","5":"setosa"},{"1":"4.4","2":"2.9","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.9","2":"3.1","3":"1.5","4":"0.1","5":"setosa"},{"1":"5.4","2":"3.7","3":"1.5","4":"0.2","5":"setosa"},{"1":"4.8","2":"3.4","3":"1.6","4":"0.2","5":"setosa"},{"1":"4.8","2":"3.0","3":"1.4","4":"0.1","5":"setosa"},{"1":"4.3","2":"3.0","3":"1.1","4":"0.1","5":"setosa"},{"1":"5.8","2":"4.0","3":"1.2","4":"0.2","5":"setosa"},{"1":"5.7","2":"4.4","3":"1.5","4":"0.4","5":"setosa"},{"1":"5.4","2":"3.9","3":"1.3","4":"0.4","5":"setosa"},{"1":"5.1","2":"3.5","3":"1.4","4":"0.3","5":"setosa"},{"1":"5.7","2":"3.8","3":"1.7","4":"0.3","5":"setosa"},{"1":"5.1","2":"3.8","3":"1.5","4":"0.3","5":"setosa"},{"1":"5.4","2":"3.4","3":"1.7","4":"0.2","5":"setosa"},{"1":"5.1","2":"3.7","3":"1.5","4":"0.4","5":"setosa"},{"1":"4.6","2":"3.6","3":"1.0","4":"0.2","5":"setosa"},{"1":"5.1","2":"3.3","3":"1.7","4":"0.5","5":"setosa"},{"1":"4.8","2":"3.4","3":"1.9","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.0","3":"1.6","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.4","3":"1.6","4":"0.4","5":"setosa"},{"1":"5.2","2":"3.5","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.2","2":"3.4","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.7","2":"3.2","3":"1.6","4":"0.2","5":"setosa"},{"1":"4.8","2":"3.1","3":"1.6","4":"0.2","5":"setosa"},{"1":"5.4","2":"3.4","3":"1.5","4":"0.4","5":"setosa"},{"1":"5.2","2":"4.1","3":"1.5","4":"0.1","5":"setosa"},{"1":"5.5","2":"4.2","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.9","2":"3.1","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.2","3":"1.2","4":"0.2","5":"setosa"},{"1":"5.5","2":"3.5","3":"1.3","4":"0.2","5":"setosa"},{"1":"4.9","2":"3.6","3":"1.4","4":"0.1","5":"setosa"},{"1":"4.4","2":"3.0","3":"1.3","4":"0.2","5":"setosa"},{"1":"5.1","2":"3.4","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.5","3":"1.3","4":"0.3","5":"setosa"},{"1":"4.5","2":"2.3","3":"1.3","4":"0.3","5":"setosa"},{"1":"4.4","2":"3.2","3":"1.3","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.5","3":"1.6","4":"0.6","5":"setosa"},{"1":"5.1","2":"3.8","3":"1.9","4":"0.4","5":"setosa"},{"1":"4.8","2":"3.0","3":"1.4","4":"0.3","5":"setosa"},{"1":"5.1","2":"3.8","3":"1.6","4":"0.2","5":"setosa"},{"1":"4.6","2":"3.2","3":"1.4","4":"0.2","5":"setosa"},{"1":"5.3","2":"3.7","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.3","3":"1.4","4":"0.2","5":"setosa"},{"1":"7.0","2":"3.2","3":"4.7","4":"1.4","5":"versicolor"},{"1":"6.4","2":"3.2","3":"4.5","4":"1.5","5":"versicolor"},{"1":"6.9","2":"3.1","3":"4.9","4":"1.5","5":"versicolor"},{"1":"5.5","2":"2.3","3":"4.0","4":"1.3","5":"versicolor"},{"1":"6.5","2":"2.8","3":"4.6","4":"1.5","5":"versicolor"},{"1":"5.7","2":"2.8","3":"4.5","4":"1.3","5":"versicolor"},{"1":"6.3","2":"3.3","3":"4.7","4":"1.6","5":"versicolor"},{"1":"4.9","2":"2.4","3":"3.3","4":"1.0","5":"versicolor"},{"1":"6.6","2":"2.9","3":"4.6","4":"1.3","5":"versicolor"},{"1":"5.2","2":"2.7","3":"3.9","4":"1.4","5":"versicolor"},{"1":"5.0","2":"2.0","3":"3.5","4":"1.0","5":"versicolor"},{"1":"5.9","2":"3.0","3":"4.2","4":"1.5","5":"versicolor"},{"1":"6.0","2":"2.2","3":"4.0","4":"1.0","5":"versicolor"},{"1":"6.1","2":"2.9","3":"4.7","4":"1.4","5":"versicolor"},{"1":"5.6","2":"2.9","3":"3.6","4":"1.3","5":"versicolor"},{"1":"6.7","2":"3.1","3":"4.4","4":"1.4","5":"versicolor"},{"1":"5.6","2":"3.0","3":"4.5","4":"1.5","5":"versicolor"},{"1":"5.8","2":"2.7","3":"4.1","4":"1.0","5":"versicolor"},{"1":"6.2","2":"2.2","3":"4.5","4":"1.5","5":"versicolor"},{"1":"5.6","2":"2.5","3":"3.9","4":"1.1","5":"versicolor"},{"1":"5.9","2":"3.2","3":"4.8","4":"1.8","5":"versicolor"},{"1":"6.1","2":"2.8","3":"4.0","4":"1.3","5":"versicolor"},{"1":"6.3","2":"2.5","3":"4.9","4":"1.5","5":"versicolor"},{"1":"6.1","2":"2.8","3":"4.7","4":"1.2","5":"versicolor"},{"1":"6.4","2":"2.9","3":"4.3","4":"1.3","5":"versicolor"},{"1":"6.6","2":"3.0","3":"4.4","4":"1.4","5":"versicolor"},{"1":"6.8","2":"2.8","3":"4.8","4":"1.4","5":"versicolor"},{"1":"6.7","2":"3.0","3":"5.0","4":"1.7","5":"versicolor"},{"1":"6.0","2":"2.9","3":"4.5","4":"1.5","5":"versicolor"},{"1":"5.7","2":"2.6","3":"3.5","4":"1.0","5":"versicolor"},{"1":"5.5","2":"2.4","3":"3.8","4":"1.1","5":"versicolor"},{"1":"5.5","2":"2.4","3":"3.7","4":"1.0","5":"versicolor"},{"1":"5.8","2":"2.7","3":"3.9","4":"1.2","5":"versicolor"},{"1":"6.0","2":"2.7","3":"5.1","4":"1.6","5":"versicolor"},{"1":"5.4","2":"3.0","3":"4.5","4":"1.5","5":"versicolor"},{"1":"6.0","2":"3.4","3":"4.5","4":"1.6","5":"versicolor"},{"1":"6.7","2":"3.1","3":"4.7","4":"1.5","5":"versicolor"},{"1":"6.3","2":"2.3","3":"4.4","4":"1.3","5":"versicolor"},{"1":"5.6","2":"3.0","3":"4.1","4":"1.3","5":"versicolor"},{"1":"5.5","2":"2.5","3":"4.0","4":"1.3","5":"versicolor"},{"1":"5.5","2":"2.6","3":"4.4","4":"1.2","5":"versicolor"},{"1":"6.1","2":"3.0","3":"4.6","4":"1.4","5":"versicolor"},{"1":"5.8","2":"2.6","3":"4.0","4":"1.2","5":"versicolor"},{"1":"5.0","2":"2.3","3":"3.3","4":"1.0","5":"versicolor"},{"1":"5.6","2":"2.7","3":"4.2","4":"1.3","5":"versicolor"},{"1":"5.7","2":"3.0","3":"4.2","4":"1.2","5":"versicolor"},{"1":"5.7","2":"2.9","3":"4.2","4":"1.3","5":"versicolor"},{"1":"6.2","2":"2.9","3":"4.3","4":"1.3","5":"versicolor"},{"1":"5.1","2":"2.5","3":"3.0","4":"1.1","5":"versicolor"},{"1":"5.7","2":"2.8","3":"4.1","4":"1.3","5":"versicolor"},{"1":"6.3","2":"3.3","3":"6.0","4":"2.5","5":"virginica"},{"1":"5.8","2":"2.7","3":"5.1","4":"1.9","5":"virginica"},{"1":"7.1","2":"3.0","3":"5.9","4":"2.1","5":"virginica"},{"1":"6.3","2":"2.9","3":"5.6","4":"1.8","5":"virginica"},{"1":"6.5","2":"3.0","3":"5.8","4":"2.2","5":"virginica"},{"1":"7.6","2":"3.0","3":"6.6","4":"2.1","5":"virginica"},{"1":"4.9","2":"2.5","3":"4.5","4":"1.7","5":"virginica"},{"1":"7.3","2":"2.9","3":"6.3","4":"1.8","5":"virginica"},{"1":"6.7","2":"2.5","3":"5.8","4":"1.8","5":"virginica"},{"1":"7.2","2":"3.6","3":"6.1","4":"2.5","5":"virginica"},{"1":"6.5","2":"3.2","3":"5.1","4":"2.0","5":"virginica"},{"1":"6.4","2":"2.7","3":"5.3","4":"1.9","5":"virginica"},{"1":"6.8","2":"3.0","3":"5.5","4":"2.1","5":"virginica"},{"1":"5.7","2":"2.5","3":"5.0","4":"2.0","5":"virginica"},{"1":"5.8","2":"2.8","3":"5.1","4":"2.4","5":"virginica"},{"1":"6.4","2":"3.2","3":"5.3","4":"2.3","5":"virginica"},{"1":"6.5","2":"3.0","3":"5.5","4":"1.8","5":"virginica"},{"1":"7.7","2":"3.8","3":"6.7","4":"2.2","5":"virginica"},{"1":"7.7","2":"2.6","3":"6.9","4":"2.3","5":"virginica"},{"1":"6.0","2":"2.2","3":"5.0","4":"1.5","5":"virginica"},{"1":"6.9","2":"3.2","3":"5.7","4":"2.3","5":"virginica"},{"1":"5.6","2":"2.8","3":"4.9","4":"2.0","5":"virginica"},{"1":"7.7","2":"2.8","3":"6.7","4":"2.0","5":"virginica"},{"1":"6.3","2":"2.7","3":"4.9","4":"1.8","5":"virginica"},{"1":"6.7","2":"3.3","3":"5.7","4":"2.1","5":"virginica"},{"1":"7.2","2":"3.2","3":"6.0","4":"1.8","5":"virginica"},{"1":"6.2","2":"2.8","3":"4.8","4":"1.8","5":"virginica"},{"1":"6.1","2":"3.0","3":"4.9","4":"1.8","5":"virginica"},{"1":"6.4","2":"2.8","3":"5.6","4":"2.1","5":"virginica"},{"1":"7.2","2":"3.0","3":"5.8","4":"1.6","5":"virginica"},{"1":"7.4","2":"2.8","3":"6.1","4":"1.9","5":"virginica"},{"1":"7.9","2":"3.8","3":"6.4","4":"2.0","5":"virginica"},{"1":"6.4","2":"2.8","3":"5.6","4":"2.2","5":"virginica"},{"1":"6.3","2":"2.8","3":"5.1","4":"1.5","5":"virginica"},{"1":"6.1","2":"2.6","3":"5.6","4":"1.4","5":"virginica"},{"1":"7.7","2":"3.0","3":"6.1","4":"2.3","5":"virginica"},{"1":"6.3","2":"3.4","3":"5.6","4":"2.4","5":"virginica"},{"1":"6.4","2":"3.1","3":"5.5","4":"1.8","5":"virginica"},{"1":"6.0","2":"3.0","3":"4.8","4":"1.8","5":"virginica"},{"1":"6.9","2":"3.1","3":"5.4","4":"2.1","5":"virginica"},{"1":"6.7","2":"3.1","3":"5.6","4":"2.4","5":"virginica"},{"1":"6.9","2":"3.1","3":"5.1","4":"2.3","5":"virginica"},{"1":"5.8","2":"2.7","3":"5.1","4":"1.9","5":"virginica"},{"1":"6.8","2":"3.2","3":"5.9","4":"2.3","5":"virginica"},{"1":"6.7","2":"3.3","3":"5.7","4":"2.5","5":"virginica"},{"1":"6.7","2":"3.0","3":"5.2","4":"2.3","5":"virginica"},{"1":"6.3","2":"2.5","3":"5.0","4":"1.9","5":"virginica"},{"1":"6.5","2":"3.0","3":"5.2","4":"2.0","5":"virginica"},{"1":"6.2","2":"3.4","3":"5.4","4":"2.3","5":"virginica"},{"1":"5.9","2":"3.0","3":"5.1","4":"1.8","5":"virginica"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[6],"max":[6]},"pages":{}}}
+  </script>
+</div>
+</div>
+<h2 id="select-filter"><code>select</code> &amp; <code>filter</code></h2>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+library(tidyverse)
+
+iris %&gt;%
+  select(Sepal.Length, Petal.Length, Species) %&gt;%
+  filter(Sepal.Length &gt; 6) %&gt;%
+  paged_table(options = list(rows.print = 6))</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"7.0","2":"4.7","3":"versicolor"},{"1":"6.4","2":"4.5","3":"versicolor"},{"1":"6.9","2":"4.9","3":"versicolor"},{"1":"6.5","2":"4.6","3":"versicolor"},{"1":"6.3","2":"4.7","3":"versicolor"},{"1":"6.6","2":"4.6","3":"versicolor"},{"1":"6.1","2":"4.7","3":"versicolor"},{"1":"6.7","2":"4.4","3":"versicolor"},{"1":"6.2","2":"4.5","3":"versicolor"},{"1":"6.1","2":"4.0","3":"versicolor"},{"1":"6.3","2":"4.9","3":"versicolor"},{"1":"6.1","2":"4.7","3":"versicolor"},{"1":"6.4","2":"4.3","3":"versicolor"},{"1":"6.6","2":"4.4","3":"versicolor"},{"1":"6.8","2":"4.8","3":"versicolor"},{"1":"6.7","2":"5.0","3":"versicolor"},{"1":"6.7","2":"4.7","3":"versicolor"},{"1":"6.3","2":"4.4","3":"versicolor"},{"1":"6.1","2":"4.6","3":"versicolor"},{"1":"6.2","2":"4.3","3":"versicolor"},{"1":"6.3","2":"6.0","3":"virginica"},{"1":"7.1","2":"5.9","3":"virginica"},{"1":"6.3","2":"5.6","3":"virginica"},{"1":"6.5","2":"5.8","3":"virginica"},{"1":"7.6","2":"6.6","3":"virginica"},{"1":"7.3","2":"6.3","3":"virginica"},{"1":"6.7","2":"5.8","3":"virginica"},{"1":"7.2","2":"6.1","3":"virginica"},{"1":"6.5","2":"5.1","3":"virginica"},{"1":"6.4","2":"5.3","3":"virginica"},{"1":"6.8","2":"5.5","3":"virginica"},{"1":"6.4","2":"5.3","3":"virginica"},{"1":"6.5","2":"5.5","3":"virginica"},{"1":"7.7","2":"6.7","3":"virginica"},{"1":"7.7","2":"6.9","3":"virginica"},{"1":"6.9","2":"5.7","3":"virginica"},{"1":"7.7","2":"6.7","3":"virginica"},{"1":"6.3","2":"4.9","3":"virginica"},{"1":"6.7","2":"5.7","3":"virginica"},{"1":"7.2","2":"6.0","3":"virginica"},{"1":"6.2","2":"4.8","3":"virginica"},{"1":"6.1","2":"4.9","3":"virginica"},{"1":"6.4","2":"5.6","3":"virginica"},{"1":"7.2","2":"5.8","3":"virginica"},{"1":"7.4","2":"6.1","3":"virginica"},{"1":"7.9","2":"6.4","3":"virginica"},{"1":"6.4","2":"5.6","3":"virginica"},{"1":"6.3","2":"5.1","3":"virginica"},{"1":"6.1","2":"5.6","3":"virginica"},{"1":"7.7","2":"6.1","3":"virginica"},{"1":"6.3","2":"5.6","3":"virginica"},{"1":"6.4","2":"5.5","3":"virginica"},{"1":"6.9","2":"5.4","3":"virginica"},{"1":"6.7","2":"5.6","3":"virginica"},{"1":"6.9","2":"5.1","3":"virginica"},{"1":"6.8","2":"5.9","3":"virginica"},{"1":"6.7","2":"5.7","3":"virginica"},{"1":"6.7","2":"5.2","3":"virginica"},{"1":"6.3","2":"5.0","3":"virginica"},{"1":"6.5","2":"5.2","3":"virginica"},{"1":"6.2","2":"5.4","3":"virginica"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[6],"max":[6]},"pages":{}}}
+  </script>
+</div>
+</div>
+<p>I’m sure you have noticed this <code>%&gt;%</code> symbol. Technically, it means it will “take the result from left and send it to the function on the right side or below as the first argument”. If this explanation confuses you, I found it might be easier to treat it as <i class="fa fa-arrow-right"></i> or pronounce it as “next” when you read it out. The whole point of using this symbol is to make your code more literal and readable.</p>
+<p>For <code>select</code>, there are three helper functions in <code>dplyr</code> that worth knowing. They are <code>starts_with</code>, <code>ends_with</code> and <code>contains</code>. We can use them to quickly find out the columns we need.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+iris %&gt;%
+  select(contains(&quot;Length&quot;), Species) %&gt;%
+  paged_table(options = list(rows.print = 6))</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[3],"type":["fctr"],"align":["left"]}],"data":[{"1":"5.1","2":"1.4","3":"setosa"},{"1":"4.9","2":"1.4","3":"setosa"},{"1":"4.7","2":"1.3","3":"setosa"},{"1":"4.6","2":"1.5","3":"setosa"},{"1":"5.0","2":"1.4","3":"setosa"},{"1":"5.4","2":"1.7","3":"setosa"},{"1":"4.6","2":"1.4","3":"setosa"},{"1":"5.0","2":"1.5","3":"setosa"},{"1":"4.4","2":"1.4","3":"setosa"},{"1":"4.9","2":"1.5","3":"setosa"},{"1":"5.4","2":"1.5","3":"setosa"},{"1":"4.8","2":"1.6","3":"setosa"},{"1":"4.8","2":"1.4","3":"setosa"},{"1":"4.3","2":"1.1","3":"setosa"},{"1":"5.8","2":"1.2","3":"setosa"},{"1":"5.7","2":"1.5","3":"setosa"},{"1":"5.4","2":"1.3","3":"setosa"},{"1":"5.1","2":"1.4","3":"setosa"},{"1":"5.7","2":"1.7","3":"setosa"},{"1":"5.1","2":"1.5","3":"setosa"},{"1":"5.4","2":"1.7","3":"setosa"},{"1":"5.1","2":"1.5","3":"setosa"},{"1":"4.6","2":"1.0","3":"setosa"},{"1":"5.1","2":"1.7","3":"setosa"},{"1":"4.8","2":"1.9","3":"setosa"},{"1":"5.0","2":"1.6","3":"setosa"},{"1":"5.0","2":"1.6","3":"setosa"},{"1":"5.2","2":"1.5","3":"setosa"},{"1":"5.2","2":"1.4","3":"setosa"},{"1":"4.7","2":"1.6","3":"setosa"},{"1":"4.8","2":"1.6","3":"setosa"},{"1":"5.4","2":"1.5","3":"setosa"},{"1":"5.2","2":"1.5","3":"setosa"},{"1":"5.5","2":"1.4","3":"setosa"},{"1":"4.9","2":"1.5","3":"setosa"},{"1":"5.0","2":"1.2","3":"setosa"},{"1":"5.5","2":"1.3","3":"setosa"},{"1":"4.9","2":"1.4","3":"setosa"},{"1":"4.4","2":"1.3","3":"setosa"},{"1":"5.1","2":"1.5","3":"setosa"},{"1":"5.0","2":"1.3","3":"setosa"},{"1":"4.5","2":"1.3","3":"setosa"},{"1":"4.4","2":"1.3","3":"setosa"},{"1":"5.0","2":"1.6","3":"setosa"},{"1":"5.1","2":"1.9","3":"setosa"},{"1":"4.8","2":"1.4","3":"setosa"},{"1":"5.1","2":"1.6","3":"setosa"},{"1":"4.6","2":"1.4","3":"setosa"},{"1":"5.3","2":"1.5","3":"setosa"},{"1":"5.0","2":"1.4","3":"setosa"},{"1":"7.0","2":"4.7","3":"versicolor"},{"1":"6.4","2":"4.5","3":"versicolor"},{"1":"6.9","2":"4.9","3":"versicolor"},{"1":"5.5","2":"4.0","3":"versicolor"},{"1":"6.5","2":"4.6","3":"versicolor"},{"1":"5.7","2":"4.5","3":"versicolor"},{"1":"6.3","2":"4.7","3":"versicolor"},{"1":"4.9","2":"3.3","3":"versicolor"},{"1":"6.6","2":"4.6","3":"versicolor"},{"1":"5.2","2":"3.9","3":"versicolor"},{"1":"5.0","2":"3.5","3":"versicolor"},{"1":"5.9","2":"4.2","3":"versicolor"},{"1":"6.0","2":"4.0","3":"versicolor"},{"1":"6.1","2":"4.7","3":"versicolor"},{"1":"5.6","2":"3.6","3":"versicolor"},{"1":"6.7","2":"4.4","3":"versicolor"},{"1":"5.6","2":"4.5","3":"versicolor"},{"1":"5.8","2":"4.1","3":"versicolor"},{"1":"6.2","2":"4.5","3":"versicolor"},{"1":"5.6","2":"3.9","3":"versicolor"},{"1":"5.9","2":"4.8","3":"versicolor"},{"1":"6.1","2":"4.0","3":"versicolor"},{"1":"6.3","2":"4.9","3":"versicolor"},{"1":"6.1","2":"4.7","3":"versicolor"},{"1":"6.4","2":"4.3","3":"versicolor"},{"1":"6.6","2":"4.4","3":"versicolor"},{"1":"6.8","2":"4.8","3":"versicolor"},{"1":"6.7","2":"5.0","3":"versicolor"},{"1":"6.0","2":"4.5","3":"versicolor"},{"1":"5.7","2":"3.5","3":"versicolor"},{"1":"5.5","2":"3.8","3":"versicolor"},{"1":"5.5","2":"3.7","3":"versicolor"},{"1":"5.8","2":"3.9","3":"versicolor"},{"1":"6.0","2":"5.1","3":"versicolor"},{"1":"5.4","2":"4.5","3":"versicolor"},{"1":"6.0","2":"4.5","3":"versicolor"},{"1":"6.7","2":"4.7","3":"versicolor"},{"1":"6.3","2":"4.4","3":"versicolor"},{"1":"5.6","2":"4.1","3":"versicolor"},{"1":"5.5","2":"4.0","3":"versicolor"},{"1":"5.5","2":"4.4","3":"versicolor"},{"1":"6.1","2":"4.6","3":"versicolor"},{"1":"5.8","2":"4.0","3":"versicolor"},{"1":"5.0","2":"3.3","3":"versicolor"},{"1":"5.6","2":"4.2","3":"versicolor"},{"1":"5.7","2":"4.2","3":"versicolor"},{"1":"5.7","2":"4.2","3":"versicolor"},{"1":"6.2","2":"4.3","3":"versicolor"},{"1":"5.1","2":"3.0","3":"versicolor"},{"1":"5.7","2":"4.1","3":"versicolor"},{"1":"6.3","2":"6.0","3":"virginica"},{"1":"5.8","2":"5.1","3":"virginica"},{"1":"7.1","2":"5.9","3":"virginica"},{"1":"6.3","2":"5.6","3":"virginica"},{"1":"6.5","2":"5.8","3":"virginica"},{"1":"7.6","2":"6.6","3":"virginica"},{"1":"4.9","2":"4.5","3":"virginica"},{"1":"7.3","2":"6.3","3":"virginica"},{"1":"6.7","2":"5.8","3":"virginica"},{"1":"7.2","2":"6.1","3":"virginica"},{"1":"6.5","2":"5.1","3":"virginica"},{"1":"6.4","2":"5.3","3":"virginica"},{"1":"6.8","2":"5.5","3":"virginica"},{"1":"5.7","2":"5.0","3":"virginica"},{"1":"5.8","2":"5.1","3":"virginica"},{"1":"6.4","2":"5.3","3":"virginica"},{"1":"6.5","2":"5.5","3":"virginica"},{"1":"7.7","2":"6.7","3":"virginica"},{"1":"7.7","2":"6.9","3":"virginica"},{"1":"6.0","2":"5.0","3":"virginica"},{"1":"6.9","2":"5.7","3":"virginica"},{"1":"5.6","2":"4.9","3":"virginica"},{"1":"7.7","2":"6.7","3":"virginica"},{"1":"6.3","2":"4.9","3":"virginica"},{"1":"6.7","2":"5.7","3":"virginica"},{"1":"7.2","2":"6.0","3":"virginica"},{"1":"6.2","2":"4.8","3":"virginica"},{"1":"6.1","2":"4.9","3":"virginica"},{"1":"6.4","2":"5.6","3":"virginica"},{"1":"7.2","2":"5.8","3":"virginica"},{"1":"7.4","2":"6.1","3":"virginica"},{"1":"7.9","2":"6.4","3":"virginica"},{"1":"6.4","2":"5.6","3":"virginica"},{"1":"6.3","2":"5.1","3":"virginica"},{"1":"6.1","2":"5.6","3":"virginica"},{"1":"7.7","2":"6.1","3":"virginica"},{"1":"6.3","2":"5.6","3":"virginica"},{"1":"6.4","2":"5.5","3":"virginica"},{"1":"6.0","2":"4.8","3":"virginica"},{"1":"6.9","2":"5.4","3":"virginica"},{"1":"6.7","2":"5.6","3":"virginica"},{"1":"6.9","2":"5.1","3":"virginica"},{"1":"5.8","2":"5.1","3":"virginica"},{"1":"6.8","2":"5.9","3":"virginica"},{"1":"6.7","2":"5.7","3":"virginica"},{"1":"6.7","2":"5.2","3":"virginica"},{"1":"6.3","2":"5.0","3":"virginica"},{"1":"6.5","2":"5.2","3":"virginica"},{"1":"6.2","2":"5.4","3":"virginica"},{"1":"5.9","2":"5.1","3":"virginica"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[6],"max":[6]},"pages":{}}}
+  </script>
+</div>
+</div>
+<p>Note that you can also use the minus sign <code>-</code> in select to indicate that you don’t want an item. Also, you can use column index (numbers) instead of column names to do the work. For example, <code>iris %&gt;% select(-Species)</code> and <code>iris %&gt;% select(-5)</code> both work.</p>
+<h2 id="mutate-summarize"><code>mutate</code> &amp; <code>summarize</code></h2>
+<p>It’s always good to keep in mind that <code>mutate</code> add/edit columns while <code>summarize</code> destories the entire table and create new ones. Note that everything in <code>mutate</code> is doing vector calculation so for conditional-logics, it’s easy to combine it with the power of <code>ifelse</code>. (See <a href="https://stackoverflow.com/questions/34005423/is-if-faster-than-ifelse">here</a> for a comparison between <code>if</code> and <code>ifelse</code>).</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+iris %&gt;%
+  select(Petal.Length) %&gt;%
+  mutate(
+    Petal.Length2 = Petal.Length + 1,
+    Petal.Length3 = ifelse(Petal.Length &gt;= 1.5, TRUE, FALSE)
+  ) %&gt;%
+  paged_table(options = list(rows.print = 6))</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Petal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Petal.Length2"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Petal.Length3"],"name":[3],"type":["lgl"],"align":["right"]}],"data":[{"1":"1.4","2":"2.4","3":"FALSE"},{"1":"1.4","2":"2.4","3":"FALSE"},{"1":"1.3","2":"2.3","3":"FALSE"},{"1":"1.5","2":"2.5","3":"TRUE"},{"1":"1.4","2":"2.4","3":"FALSE"},{"1":"1.7","2":"2.7","3":"TRUE"},{"1":"1.4","2":"2.4","3":"FALSE"},{"1":"1.5","2":"2.5","3":"TRUE"},{"1":"1.4","2":"2.4","3":"FALSE"},{"1":"1.5","2":"2.5","3":"TRUE"},{"1":"1.5","2":"2.5","3":"TRUE"},{"1":"1.6","2":"2.6","3":"TRUE"},{"1":"1.4","2":"2.4","3":"FALSE"},{"1":"1.1","2":"2.1","3":"FALSE"},{"1":"1.2","2":"2.2","3":"FALSE"},{"1":"1.5","2":"2.5","3":"TRUE"},{"1":"1.3","2":"2.3","3":"FALSE"},{"1":"1.4","2":"2.4","3":"FALSE"},{"1":"1.7","2":"2.7","3":"TRUE"},{"1":"1.5","2":"2.5","3":"TRUE"},{"1":"1.7","2":"2.7","3":"TRUE"},{"1":"1.5","2":"2.5","3":"TRUE"},{"1":"1.0","2":"2.0","3":"FALSE"},{"1":"1.7","2":"2.7","3":"TRUE"},{"1":"1.9","2":"2.9","3":"TRUE"},{"1":"1.6","2":"2.6","3":"TRUE"},{"1":"1.6","2":"2.6","3":"TRUE"},{"1":"1.5","2":"2.5","3":"TRUE"},{"1":"1.4","2":"2.4","3":"FALSE"},{"1":"1.6","2":"2.6","3":"TRUE"},{"1":"1.6","2":"2.6","3":"TRUE"},{"1":"1.5","2":"2.5","3":"TRUE"},{"1":"1.5","2":"2.5","3":"TRUE"},{"1":"1.4","2":"2.4","3":"FALSE"},{"1":"1.5","2":"2.5","3":"TRUE"},{"1":"1.2","2":"2.2","3":"FALSE"},{"1":"1.3","2":"2.3","3":"FALSE"},{"1":"1.4","2":"2.4","3":"FALSE"},{"1":"1.3","2":"2.3","3":"FALSE"},{"1":"1.5","2":"2.5","3":"TRUE"},{"1":"1.3","2":"2.3","3":"FALSE"},{"1":"1.3","2":"2.3","3":"FALSE"},{"1":"1.3","2":"2.3","3":"FALSE"},{"1":"1.6","2":"2.6","3":"TRUE"},{"1":"1.9","2":"2.9","3":"TRUE"},{"1":"1.4","2":"2.4","3":"FALSE"},{"1":"1.6","2":"2.6","3":"TRUE"},{"1":"1.4","2":"2.4","3":"FALSE"},{"1":"1.5","2":"2.5","3":"TRUE"},{"1":"1.4","2":"2.4","3":"FALSE"},{"1":"4.7","2":"5.7","3":"TRUE"},{"1":"4.5","2":"5.5","3":"TRUE"},{"1":"4.9","2":"5.9","3":"TRUE"},{"1":"4.0","2":"5.0","3":"TRUE"},{"1":"4.6","2":"5.6","3":"TRUE"},{"1":"4.5","2":"5.5","3":"TRUE"},{"1":"4.7","2":"5.7","3":"TRUE"},{"1":"3.3","2":"4.3","3":"TRUE"},{"1":"4.6","2":"5.6","3":"TRUE"},{"1":"3.9","2":"4.9","3":"TRUE"},{"1":"3.5","2":"4.5","3":"TRUE"},{"1":"4.2","2":"5.2","3":"TRUE"},{"1":"4.0","2":"5.0","3":"TRUE"},{"1":"4.7","2":"5.7","3":"TRUE"},{"1":"3.6","2":"4.6","3":"TRUE"},{"1":"4.4","2":"5.4","3":"TRUE"},{"1":"4.5","2":"5.5","3":"TRUE"},{"1":"4.1","2":"5.1","3":"TRUE"},{"1":"4.5","2":"5.5","3":"TRUE"},{"1":"3.9","2":"4.9","3":"TRUE"},{"1":"4.8","2":"5.8","3":"TRUE"},{"1":"4.0","2":"5.0","3":"TRUE"},{"1":"4.9","2":"5.9","3":"TRUE"},{"1":"4.7","2":"5.7","3":"TRUE"},{"1":"4.3","2":"5.3","3":"TRUE"},{"1":"4.4","2":"5.4","3":"TRUE"},{"1":"4.8","2":"5.8","3":"TRUE"},{"1":"5.0","2":"6.0","3":"TRUE"},{"1":"4.5","2":"5.5","3":"TRUE"},{"1":"3.5","2":"4.5","3":"TRUE"},{"1":"3.8","2":"4.8","3":"TRUE"},{"1":"3.7","2":"4.7","3":"TRUE"},{"1":"3.9","2":"4.9","3":"TRUE"},{"1":"5.1","2":"6.1","3":"TRUE"},{"1":"4.5","2":"5.5","3":"TRUE"},{"1":"4.5","2":"5.5","3":"TRUE"},{"1":"4.7","2":"5.7","3":"TRUE"},{"1":"4.4","2":"5.4","3":"TRUE"},{"1":"4.1","2":"5.1","3":"TRUE"},{"1":"4.0","2":"5.0","3":"TRUE"},{"1":"4.4","2":"5.4","3":"TRUE"},{"1":"4.6","2":"5.6","3":"TRUE"},{"1":"4.0","2":"5.0","3":"TRUE"},{"1":"3.3","2":"4.3","3":"TRUE"},{"1":"4.2","2":"5.2","3":"TRUE"},{"1":"4.2","2":"5.2","3":"TRUE"},{"1":"4.2","2":"5.2","3":"TRUE"},{"1":"4.3","2":"5.3","3":"TRUE"},{"1":"3.0","2":"4.0","3":"TRUE"},{"1":"4.1","2":"5.1","3":"TRUE"},{"1":"6.0","2":"7.0","3":"TRUE"},{"1":"5.1","2":"6.1","3":"TRUE"},{"1":"5.9","2":"6.9","3":"TRUE"},{"1":"5.6","2":"6.6","3":"TRUE"},{"1":"5.8","2":"6.8","3":"TRUE"},{"1":"6.6","2":"7.6","3":"TRUE"},{"1":"4.5","2":"5.5","3":"TRUE"},{"1":"6.3","2":"7.3","3":"TRUE"},{"1":"5.8","2":"6.8","3":"TRUE"},{"1":"6.1","2":"7.1","3":"TRUE"},{"1":"5.1","2":"6.1","3":"TRUE"},{"1":"5.3","2":"6.3","3":"TRUE"},{"1":"5.5","2":"6.5","3":"TRUE"},{"1":"5.0","2":"6.0","3":"TRUE"},{"1":"5.1","2":"6.1","3":"TRUE"},{"1":"5.3","2":"6.3","3":"TRUE"},{"1":"5.5","2":"6.5","3":"TRUE"},{"1":"6.7","2":"7.7","3":"TRUE"},{"1":"6.9","2":"7.9","3":"TRUE"},{"1":"5.0","2":"6.0","3":"TRUE"},{"1":"5.7","2":"6.7","3":"TRUE"},{"1":"4.9","2":"5.9","3":"TRUE"},{"1":"6.7","2":"7.7","3":"TRUE"},{"1":"4.9","2":"5.9","3":"TRUE"},{"1":"5.7","2":"6.7","3":"TRUE"},{"1":"6.0","2":"7.0","3":"TRUE"},{"1":"4.8","2":"5.8","3":"TRUE"},{"1":"4.9","2":"5.9","3":"TRUE"},{"1":"5.6","2":"6.6","3":"TRUE"},{"1":"5.8","2":"6.8","3":"TRUE"},{"1":"6.1","2":"7.1","3":"TRUE"},{"1":"6.4","2":"7.4","3":"TRUE"},{"1":"5.6","2":"6.6","3":"TRUE"},{"1":"5.1","2":"6.1","3":"TRUE"},{"1":"5.6","2":"6.6","3":"TRUE"},{"1":"6.1","2":"7.1","3":"TRUE"},{"1":"5.6","2":"6.6","3":"TRUE"},{"1":"5.5","2":"6.5","3":"TRUE"},{"1":"4.8","2":"5.8","3":"TRUE"},{"1":"5.4","2":"6.4","3":"TRUE"},{"1":"5.6","2":"6.6","3":"TRUE"},{"1":"5.1","2":"6.1","3":"TRUE"},{"1":"5.1","2":"6.1","3":"TRUE"},{"1":"5.9","2":"6.9","3":"TRUE"},{"1":"5.7","2":"6.7","3":"TRUE"},{"1":"5.2","2":"6.2","3":"TRUE"},{"1":"5.0","2":"6.0","3":"TRUE"},{"1":"5.2","2":"6.2","3":"TRUE"},{"1":"5.4","2":"6.4","3":"TRUE"},{"1":"5.1","2":"6.1","3":"TRUE"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[6],"max":[6]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+iris %&gt;%
+  summarize(
+    Petal.Length.mean = mean(Petal.Length),
+    Petal.Length.sd = sd(Petal.Length)
+  ) </code></pre>
+<pre><code>
+  Petal.Length.mean Petal.Length.sd
+1             3.758        1.765298</code></pre>
+</div>
+<h2 id="group_by-summarize"><code>group_by</code> + <code>summarize</code></h2>
+<p><code>summarize</code> only shines when you combine it with <code>group_by</code>.</p>
+<div class="layout-chunk" data-layout="l-body">
+
+<pre class="r"><code>
+iris %&gt;%
+  group_by(Species) %&gt;%
+  summarize(
+    Petal.Length.mean = mean(Petal.Length),
+    Petal.Length.sd = sd(Petal.Length)
+  ) %&gt;%
+  qtable()</code></pre>
+<table class="table table-striped table-hover table-condensed" style="width: auto !important; ">
+<thead>
+<tr>
+<th style="text-align:left;">
+Species
+</th>
+<th style="text-align:right;">
+Petal.Length.mean
+</th>
+<th style="text-align:right;">
+Petal.Length.sd
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+setosa
+</td>
+<td style="text-align:right;">
+1.462
+</td>
+<td style="text-align:right;">
+0.1736640
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+versicolor
+</td>
+<td style="text-align:right;">
+4.260
+</td>
+<td style="text-align:right;">
+0.4699110
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+virginica
+</td>
+<td style="text-align:right;">
+5.552
+</td>
+<td style="text-align:right;">
+0.5518947
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="group_by-filter"><code>group_by</code> + <code>filter</code></h2>
+<p><code>group_by</code> also works well with <code>filter</code>. For example, this example below with filter out the 2nd row in each category of species.</p>
+<div class="layout-chunk" data-layout="l-body">
+
+<pre class="r"><code>
+iris %&gt;%
+  group_by(Species) %&gt;%
+  filter(row_number() == 2) %&gt;%
+  qtable()</code></pre>
+<table class="table table-striped table-hover table-condensed" style="width: auto !important; ">
+<thead>
+<tr>
+<th style="text-align:right;">
+Sepal.Length
+</th>
+<th style="text-align:right;">
+Sepal.Width
+</th>
+<th style="text-align:right;">
+Petal.Length
+</th>
+<th style="text-align:right;">
+Petal.Width
+</th>
+<th style="text-align:left;">
+Species
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+4.9
+</td>
+<td style="text-align:right;">
+3.0
+</td>
+<td style="text-align:right;">
+1.4
+</td>
+<td style="text-align:right;">
+0.2
+</td>
+<td style="text-align:left;">
+setosa
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6.4
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+1.5
+</td>
+<td style="text-align:left;">
+versicolor
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5.8
+</td>
+<td style="text-align:right;">
+2.7
+</td>
+<td style="text-align:right;">
+5.1
+</td>
+<td style="text-align:right;">
+1.9
+</td>
+<td style="text-align:left;">
+virginica
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="gather-spread"><code>gather</code> &amp; <code>spread</code></h2>
+<p><code>gather</code> and <code>spread</code> follows the same syntax: <code>gather(data, key, value)</code>, <code>spread(data, key, value)</code>. In <code>gather</code>, you define <code>key</code> and <code>value</code> by yourself and your selected data will be organized into these two columns. In <code>spread</code>, you tell spread the name of the “key” and “value” you are planning to spread and it will turn the data into the wide format. Note that you need to make sure every row has a unique identifier when you spread. Otherwise you will likely see an error message.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+iris %&gt;%
+  # Note that here I&#39;m removing Species from the gathering list because this 
+  # Species column is a factor and I don&#39;t want it mess up the column type 
+  # of &quot;value&quot;.
+  # Also here instead of &quot;key&quot;, I like to call it &quot;var&quot; because practically 
+  # it makes more sense. You can call whatever you want in `gather`. 
+  gather(var, value, -Species) %&gt;% 
+  paged_table(options = list(rows.print = 6))</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Species"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["var"],"name":[2],"type":["chr"],"align":["left"]},{"label":["value"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"setosa","2":"Sepal.Length","3":"5.1"},{"1":"setosa","2":"Sepal.Length","3":"4.9"},{"1":"setosa","2":"Sepal.Length","3":"4.7"},{"1":"setosa","2":"Sepal.Length","3":"4.6"},{"1":"setosa","2":"Sepal.Length","3":"5.0"},{"1":"setosa","2":"Sepal.Length","3":"5.4"},{"1":"setosa","2":"Sepal.Length","3":"4.6"},{"1":"setosa","2":"Sepal.Length","3":"5.0"},{"1":"setosa","2":"Sepal.Length","3":"4.4"},{"1":"setosa","2":"Sepal.Length","3":"4.9"},{"1":"setosa","2":"Sepal.Length","3":"5.4"},{"1":"setosa","2":"Sepal.Length","3":"4.8"},{"1":"setosa","2":"Sepal.Length","3":"4.8"},{"1":"setosa","2":"Sepal.Length","3":"4.3"},{"1":"setosa","2":"Sepal.Length","3":"5.8"},{"1":"setosa","2":"Sepal.Length","3":"5.7"},{"1":"setosa","2":"Sepal.Length","3":"5.4"},{"1":"setosa","2":"Sepal.Length","3":"5.1"},{"1":"setosa","2":"Sepal.Length","3":"5.7"},{"1":"setosa","2":"Sepal.Length","3":"5.1"},{"1":"setosa","2":"Sepal.Length","3":"5.4"},{"1":"setosa","2":"Sepal.Length","3":"5.1"},{"1":"setosa","2":"Sepal.Length","3":"4.6"},{"1":"setosa","2":"Sepal.Length","3":"5.1"},{"1":"setosa","2":"Sepal.Length","3":"4.8"},{"1":"setosa","2":"Sepal.Length","3":"5.0"},{"1":"setosa","2":"Sepal.Length","3":"5.0"},{"1":"setosa","2":"Sepal.Length","3":"5.2"},{"1":"setosa","2":"Sepal.Length","3":"5.2"},{"1":"setosa","2":"Sepal.Length","3":"4.7"},{"1":"setosa","2":"Sepal.Length","3":"4.8"},{"1":"setosa","2":"Sepal.Length","3":"5.4"},{"1":"setosa","2":"Sepal.Length","3":"5.2"},{"1":"setosa","2":"Sepal.Length","3":"5.5"},{"1":"setosa","2":"Sepal.Length","3":"4.9"},{"1":"setosa","2":"Sepal.Length","3":"5.0"},{"1":"setosa","2":"Sepal.Length","3":"5.5"},{"1":"setosa","2":"Sepal.Length","3":"4.9"},{"1":"setosa","2":"Sepal.Length","3":"4.4"},{"1":"setosa","2":"Sepal.Length","3":"5.1"},{"1":"setosa","2":"Sepal.Length","3":"5.0"},{"1":"setosa","2":"Sepal.Length","3":"4.5"},{"1":"setosa","2":"Sepal.Length","3":"4.4"},{"1":"setosa","2":"Sepal.Length","3":"5.0"},{"1":"setosa","2":"Sepal.Length","3":"5.1"},{"1":"setosa","2":"Sepal.Length","3":"4.8"},{"1":"setosa","2":"Sepal.Length","3":"5.1"},{"1":"setosa","2":"Sepal.Length","3":"4.6"},{"1":"setosa","2":"Sepal.Length","3":"5.3"},{"1":"setosa","2":"Sepal.Length","3":"5.0"},{"1":"versicolor","2":"Sepal.Length","3":"7.0"},{"1":"versicolor","2":"Sepal.Length","3":"6.4"},{"1":"versicolor","2":"Sepal.Length","3":"6.9"},{"1":"versicolor","2":"Sepal.Length","3":"5.5"},{"1":"versicolor","2":"Sepal.Length","3":"6.5"},{"1":"versicolor","2":"Sepal.Length","3":"5.7"},{"1":"versicolor","2":"Sepal.Length","3":"6.3"},{"1":"versicolor","2":"Sepal.Length","3":"4.9"},{"1":"versicolor","2":"Sepal.Length","3":"6.6"},{"1":"versicolor","2":"Sepal.Length","3":"5.2"},{"1":"versicolor","2":"Sepal.Length","3":"5.0"},{"1":"versicolor","2":"Sepal.Length","3":"5.9"},{"1":"versicolor","2":"Sepal.Length","3":"6.0"},{"1":"versicolor","2":"Sepal.Length","3":"6.1"},{"1":"versicolor","2":"Sepal.Length","3":"5.6"},{"1":"versicolor","2":"Sepal.Length","3":"6.7"},{"1":"versicolor","2":"Sepal.Length","3":"5.6"},{"1":"versicolor","2":"Sepal.Length","3":"5.8"},{"1":"versicolor","2":"Sepal.Length","3":"6.2"},{"1":"versicolor","2":"Sepal.Length","3":"5.6"},{"1":"versicolor","2":"Sepal.Length","3":"5.9"},{"1":"versicolor","2":"Sepal.Length","3":"6.1"},{"1":"versicolor","2":"Sepal.Length","3":"6.3"},{"1":"versicolor","2":"Sepal.Length","3":"6.1"},{"1":"versicolor","2":"Sepal.Length","3":"6.4"},{"1":"versicolor","2":"Sepal.Length","3":"6.6"},{"1":"versicolor","2":"Sepal.Length","3":"6.8"},{"1":"versicolor","2":"Sepal.Length","3":"6.7"},{"1":"versicolor","2":"Sepal.Length","3":"6.0"},{"1":"versicolor","2":"Sepal.Length","3":"5.7"},{"1":"versicolor","2":"Sepal.Length","3":"5.5"},{"1":"versicolor","2":"Sepal.Length","3":"5.5"},{"1":"versicolor","2":"Sepal.Length","3":"5.8"},{"1":"versicolor","2":"Sepal.Length","3":"6.0"},{"1":"versicolor","2":"Sepal.Length","3":"5.4"},{"1":"versicolor","2":"Sepal.Length","3":"6.0"},{"1":"versicolor","2":"Sepal.Length","3":"6.7"},{"1":"versicolor","2":"Sepal.Length","3":"6.3"},{"1":"versicolor","2":"Sepal.Length","3":"5.6"},{"1":"versicolor","2":"Sepal.Length","3":"5.5"},{"1":"versicolor","2":"Sepal.Length","3":"5.5"},{"1":"versicolor","2":"Sepal.Length","3":"6.1"},{"1":"versicolor","2":"Sepal.Length","3":"5.8"},{"1":"versicolor","2":"Sepal.Length","3":"5.0"},{"1":"versicolor","2":"Sepal.Length","3":"5.6"},{"1":"versicolor","2":"Sepal.Length","3":"5.7"},{"1":"versicolor","2":"Sepal.Length","3":"5.7"},{"1":"versicolor","2":"Sepal.Length","3":"6.2"},{"1":"versicolor","2":"Sepal.Length","3":"5.1"},{"1":"versicolor","2":"Sepal.Length","3":"5.7"},{"1":"virginica","2":"Sepal.Length","3":"6.3"},{"1":"virginica","2":"Sepal.Length","3":"5.8"},{"1":"virginica","2":"Sepal.Length","3":"7.1"},{"1":"virginica","2":"Sepal.Length","3":"6.3"},{"1":"virginica","2":"Sepal.Length","3":"6.5"},{"1":"virginica","2":"Sepal.Length","3":"7.6"},{"1":"virginica","2":"Sepal.Length","3":"4.9"},{"1":"virginica","2":"Sepal.Length","3":"7.3"},{"1":"virginica","2":"Sepal.Length","3":"6.7"},{"1":"virginica","2":"Sepal.Length","3":"7.2"},{"1":"virginica","2":"Sepal.Length","3":"6.5"},{"1":"virginica","2":"Sepal.Length","3":"6.4"},{"1":"virginica","2":"Sepal.Length","3":"6.8"},{"1":"virginica","2":"Sepal.Length","3":"5.7"},{"1":"virginica","2":"Sepal.Length","3":"5.8"},{"1":"virginica","2":"Sepal.Length","3":"6.4"},{"1":"virginica","2":"Sepal.Length","3":"6.5"},{"1":"virginica","2":"Sepal.Length","3":"7.7"},{"1":"virginica","2":"Sepal.Length","3":"7.7"},{"1":"virginica","2":"Sepal.Length","3":"6.0"},{"1":"virginica","2":"Sepal.Length","3":"6.9"},{"1":"virginica","2":"Sepal.Length","3":"5.6"},{"1":"virginica","2":"Sepal.Length","3":"7.7"},{"1":"virginica","2":"Sepal.Length","3":"6.3"},{"1":"virginica","2":"Sepal.Length","3":"6.7"},{"1":"virginica","2":"Sepal.Length","3":"7.2"},{"1":"virginica","2":"Sepal.Length","3":"6.2"},{"1":"virginica","2":"Sepal.Length","3":"6.1"},{"1":"virginica","2":"Sepal.Length","3":"6.4"},{"1":"virginica","2":"Sepal.Length","3":"7.2"},{"1":"virginica","2":"Sepal.Length","3":"7.4"},{"1":"virginica","2":"Sepal.Length","3":"7.9"},{"1":"virginica","2":"Sepal.Length","3":"6.4"},{"1":"virginica","2":"Sepal.Length","3":"6.3"},{"1":"virginica","2":"Sepal.Length","3":"6.1"},{"1":"virginica","2":"Sepal.Length","3":"7.7"},{"1":"virginica","2":"Sepal.Length","3":"6.3"},{"1":"virginica","2":"Sepal.Length","3":"6.4"},{"1":"virginica","2":"Sepal.Length","3":"6.0"},{"1":"virginica","2":"Sepal.Length","3":"6.9"},{"1":"virginica","2":"Sepal.Length","3":"6.7"},{"1":"virginica","2":"Sepal.Length","3":"6.9"},{"1":"virginica","2":"Sepal.Length","3":"5.8"},{"1":"virginica","2":"Sepal.Length","3":"6.8"},{"1":"virginica","2":"Sepal.Length","3":"6.7"},{"1":"virginica","2":"Sepal.Length","3":"6.7"},{"1":"virginica","2":"Sepal.Length","3":"6.3"},{"1":"virginica","2":"Sepal.Length","3":"6.5"},{"1":"virginica","2":"Sepal.Length","3":"6.2"},{"1":"virginica","2":"Sepal.Length","3":"5.9"},{"1":"setosa","2":"Sepal.Width","3":"3.5"},{"1":"setosa","2":"Sepal.Width","3":"3.0"},{"1":"setosa","2":"Sepal.Width","3":"3.2"},{"1":"setosa","2":"Sepal.Width","3":"3.1"},{"1":"setosa","2":"Sepal.Width","3":"3.6"},{"1":"setosa","2":"Sepal.Width","3":"3.9"},{"1":"setosa","2":"Sepal.Width","3":"3.4"},{"1":"setosa","2":"Sepal.Width","3":"3.4"},{"1":"setosa","2":"Sepal.Width","3":"2.9"},{"1":"setosa","2":"Sepal.Width","3":"3.1"},{"1":"setosa","2":"Sepal.Width","3":"3.7"},{"1":"setosa","2":"Sepal.Width","3":"3.4"},{"1":"setosa","2":"Sepal.Width","3":"3.0"},{"1":"setosa","2":"Sepal.Width","3":"3.0"},{"1":"setosa","2":"Sepal.Width","3":"4.0"},{"1":"setosa","2":"Sepal.Width","3":"4.4"},{"1":"setosa","2":"Sepal.Width","3":"3.9"},{"1":"setosa","2":"Sepal.Width","3":"3.5"},{"1":"setosa","2":"Sepal.Width","3":"3.8"},{"1":"setosa","2":"Sepal.Width","3":"3.8"},{"1":"setosa","2":"Sepal.Width","3":"3.4"},{"1":"setosa","2":"Sepal.Width","3":"3.7"},{"1":"setosa","2":"Sepal.Width","3":"3.6"},{"1":"setosa","2":"Sepal.Width","3":"3.3"},{"1":"setosa","2":"Sepal.Width","3":"3.4"},{"1":"setosa","2":"Sepal.Width","3":"3.0"},{"1":"setosa","2":"Sepal.Width","3":"3.4"},{"1":"setosa","2":"Sepal.Width","3":"3.5"},{"1":"setosa","2":"Sepal.Width","3":"3.4"},{"1":"setosa","2":"Sepal.Width","3":"3.2"},{"1":"setosa","2":"Sepal.Width","3":"3.1"},{"1":"setosa","2":"Sepal.Width","3":"3.4"},{"1":"setosa","2":"Sepal.Width","3":"4.1"},{"1":"setosa","2":"Sepal.Width","3":"4.2"},{"1":"setosa","2":"Sepal.Width","3":"3.1"},{"1":"setosa","2":"Sepal.Width","3":"3.2"},{"1":"setosa","2":"Sepal.Width","3":"3.5"},{"1":"setosa","2":"Sepal.Width","3":"3.6"},{"1":"setosa","2":"Sepal.Width","3":"3.0"},{"1":"setosa","2":"Sepal.Width","3":"3.4"},{"1":"setosa","2":"Sepal.Width","3":"3.5"},{"1":"setosa","2":"Sepal.Width","3":"2.3"},{"1":"setosa","2":"Sepal.Width","3":"3.2"},{"1":"setosa","2":"Sepal.Width","3":"3.5"},{"1":"setosa","2":"Sepal.Width","3":"3.8"},{"1":"setosa","2":"Sepal.Width","3":"3.0"},{"1":"setosa","2":"Sepal.Width","3":"3.8"},{"1":"setosa","2":"Sepal.Width","3":"3.2"},{"1":"setosa","2":"Sepal.Width","3":"3.7"},{"1":"setosa","2":"Sepal.Width","3":"3.3"},{"1":"versicolor","2":"Sepal.Width","3":"3.2"},{"1":"versicolor","2":"Sepal.Width","3":"3.2"},{"1":"versicolor","2":"Sepal.Width","3":"3.1"},{"1":"versicolor","2":"Sepal.Width","3":"2.3"},{"1":"versicolor","2":"Sepal.Width","3":"2.8"},{"1":"versicolor","2":"Sepal.Width","3":"2.8"},{"1":"versicolor","2":"Sepal.Width","3":"3.3"},{"1":"versicolor","2":"Sepal.Width","3":"2.4"},{"1":"versicolor","2":"Sepal.Width","3":"2.9"},{"1":"versicolor","2":"Sepal.Width","3":"2.7"},{"1":"versicolor","2":"Sepal.Width","3":"2.0"},{"1":"versicolor","2":"Sepal.Width","3":"3.0"},{"1":"versicolor","2":"Sepal.Width","3":"2.2"},{"1":"versicolor","2":"Sepal.Width","3":"2.9"},{"1":"versicolor","2":"Sepal.Width","3":"2.9"},{"1":"versicolor","2":"Sepal.Width","3":"3.1"},{"1":"versicolor","2":"Sepal.Width","3":"3.0"},{"1":"versicolor","2":"Sepal.Width","3":"2.7"},{"1":"versicolor","2":"Sepal.Width","3":"2.2"},{"1":"versicolor","2":"Sepal.Width","3":"2.5"},{"1":"versicolor","2":"Sepal.Width","3":"3.2"},{"1":"versicolor","2":"Sepal.Width","3":"2.8"},{"1":"versicolor","2":"Sepal.Width","3":"2.5"},{"1":"versicolor","2":"Sepal.Width","3":"2.8"},{"1":"versicolor","2":"Sepal.Width","3":"2.9"},{"1":"versicolor","2":"Sepal.Width","3":"3.0"},{"1":"versicolor","2":"Sepal.Width","3":"2.8"},{"1":"versicolor","2":"Sepal.Width","3":"3.0"},{"1":"versicolor","2":"Sepal.Width","3":"2.9"},{"1":"versicolor","2":"Sepal.Width","3":"2.6"},{"1":"versicolor","2":"Sepal.Width","3":"2.4"},{"1":"versicolor","2":"Sepal.Width","3":"2.4"},{"1":"versicolor","2":"Sepal.Width","3":"2.7"},{"1":"versicolor","2":"Sepal.Width","3":"2.7"},{"1":"versicolor","2":"Sepal.Width","3":"3.0"},{"1":"versicolor","2":"Sepal.Width","3":"3.4"},{"1":"versicolor","2":"Sepal.Width","3":"3.1"},{"1":"versicolor","2":"Sepal.Width","3":"2.3"},{"1":"versicolor","2":"Sepal.Width","3":"3.0"},{"1":"versicolor","2":"Sepal.Width","3":"2.5"},{"1":"versicolor","2":"Sepal.Width","3":"2.6"},{"1":"versicolor","2":"Sepal.Width","3":"3.0"},{"1":"versicolor","2":"Sepal.Width","3":"2.6"},{"1":"versicolor","2":"Sepal.Width","3":"2.3"},{"1":"versicolor","2":"Sepal.Width","3":"2.7"},{"1":"versicolor","2":"Sepal.Width","3":"3.0"},{"1":"versicolor","2":"Sepal.Width","3":"2.9"},{"1":"versicolor","2":"Sepal.Width","3":"2.9"},{"1":"versicolor","2":"Sepal.Width","3":"2.5"},{"1":"versicolor","2":"Sepal.Width","3":"2.8"},{"1":"virginica","2":"Sepal.Width","3":"3.3"},{"1":"virginica","2":"Sepal.Width","3":"2.7"},{"1":"virginica","2":"Sepal.Width","3":"3.0"},{"1":"virginica","2":"Sepal.Width","3":"2.9"},{"1":"virginica","2":"Sepal.Width","3":"3.0"},{"1":"virginica","2":"Sepal.Width","3":"3.0"},{"1":"virginica","2":"Sepal.Width","3":"2.5"},{"1":"virginica","2":"Sepal.Width","3":"2.9"},{"1":"virginica","2":"Sepal.Width","3":"2.5"},{"1":"virginica","2":"Sepal.Width","3":"3.6"},{"1":"virginica","2":"Sepal.Width","3":"3.2"},{"1":"virginica","2":"Sepal.Width","3":"2.7"},{"1":"virginica","2":"Sepal.Width","3":"3.0"},{"1":"virginica","2":"Sepal.Width","3":"2.5"},{"1":"virginica","2":"Sepal.Width","3":"2.8"},{"1":"virginica","2":"Sepal.Width","3":"3.2"},{"1":"virginica","2":"Sepal.Width","3":"3.0"},{"1":"virginica","2":"Sepal.Width","3":"3.8"},{"1":"virginica","2":"Sepal.Width","3":"2.6"},{"1":"virginica","2":"Sepal.Width","3":"2.2"},{"1":"virginica","2":"Sepal.Width","3":"3.2"},{"1":"virginica","2":"Sepal.Width","3":"2.8"},{"1":"virginica","2":"Sepal.Width","3":"2.8"},{"1":"virginica","2":"Sepal.Width","3":"2.7"},{"1":"virginica","2":"Sepal.Width","3":"3.3"},{"1":"virginica","2":"Sepal.Width","3":"3.2"},{"1":"virginica","2":"Sepal.Width","3":"2.8"},{"1":"virginica","2":"Sepal.Width","3":"3.0"},{"1":"virginica","2":"Sepal.Width","3":"2.8"},{"1":"virginica","2":"Sepal.Width","3":"3.0"},{"1":"virginica","2":"Sepal.Width","3":"2.8"},{"1":"virginica","2":"Sepal.Width","3":"3.8"},{"1":"virginica","2":"Sepal.Width","3":"2.8"},{"1":"virginica","2":"Sepal.Width","3":"2.8"},{"1":"virginica","2":"Sepal.Width","3":"2.6"},{"1":"virginica","2":"Sepal.Width","3":"3.0"},{"1":"virginica","2":"Sepal.Width","3":"3.4"},{"1":"virginica","2":"Sepal.Width","3":"3.1"},{"1":"virginica","2":"Sepal.Width","3":"3.0"},{"1":"virginica","2":"Sepal.Width","3":"3.1"},{"1":"virginica","2":"Sepal.Width","3":"3.1"},{"1":"virginica","2":"Sepal.Width","3":"3.1"},{"1":"virginica","2":"Sepal.Width","3":"2.7"},{"1":"virginica","2":"Sepal.Width","3":"3.2"},{"1":"virginica","2":"Sepal.Width","3":"3.3"},{"1":"virginica","2":"Sepal.Width","3":"3.0"},{"1":"virginica","2":"Sepal.Width","3":"2.5"},{"1":"virginica","2":"Sepal.Width","3":"3.0"},{"1":"virginica","2":"Sepal.Width","3":"3.4"},{"1":"virginica","2":"Sepal.Width","3":"3.0"},{"1":"setosa","2":"Petal.Length","3":"1.4"},{"1":"setosa","2":"Petal.Length","3":"1.4"},{"1":"setosa","2":"Petal.Length","3":"1.3"},{"1":"setosa","2":"Petal.Length","3":"1.5"},{"1":"setosa","2":"Petal.Length","3":"1.4"},{"1":"setosa","2":"Petal.Length","3":"1.7"},{"1":"setosa","2":"Petal.Length","3":"1.4"},{"1":"setosa","2":"Petal.Length","3":"1.5"},{"1":"setosa","2":"Petal.Length","3":"1.4"},{"1":"setosa","2":"Petal.Length","3":"1.5"},{"1":"setosa","2":"Petal.Length","3":"1.5"},{"1":"setosa","2":"Petal.Length","3":"1.6"},{"1":"setosa","2":"Petal.Length","3":"1.4"},{"1":"setosa","2":"Petal.Length","3":"1.1"},{"1":"setosa","2":"Petal.Length","3":"1.2"},{"1":"setosa","2":"Petal.Length","3":"1.5"},{"1":"setosa","2":"Petal.Length","3":"1.3"},{"1":"setosa","2":"Petal.Length","3":"1.4"},{"1":"setosa","2":"Petal.Length","3":"1.7"},{"1":"setosa","2":"Petal.Length","3":"1.5"},{"1":"setosa","2":"Petal.Length","3":"1.7"},{"1":"setosa","2":"Petal.Length","3":"1.5"},{"1":"setosa","2":"Petal.Length","3":"1.0"},{"1":"setosa","2":"Petal.Length","3":"1.7"},{"1":"setosa","2":"Petal.Length","3":"1.9"},{"1":"setosa","2":"Petal.Length","3":"1.6"},{"1":"setosa","2":"Petal.Length","3":"1.6"},{"1":"setosa","2":"Petal.Length","3":"1.5"},{"1":"setosa","2":"Petal.Length","3":"1.4"},{"1":"setosa","2":"Petal.Length","3":"1.6"},{"1":"setosa","2":"Petal.Length","3":"1.6"},{"1":"setosa","2":"Petal.Length","3":"1.5"},{"1":"setosa","2":"Petal.Length","3":"1.5"},{"1":"setosa","2":"Petal.Length","3":"1.4"},{"1":"setosa","2":"Petal.Length","3":"1.5"},{"1":"setosa","2":"Petal.Length","3":"1.2"},{"1":"setosa","2":"Petal.Length","3":"1.3"},{"1":"setosa","2":"Petal.Length","3":"1.4"},{"1":"setosa","2":"Petal.Length","3":"1.3"},{"1":"setosa","2":"Petal.Length","3":"1.5"},{"1":"setosa","2":"Petal.Length","3":"1.3"},{"1":"setosa","2":"Petal.Length","3":"1.3"},{"1":"setosa","2":"Petal.Length","3":"1.3"},{"1":"setosa","2":"Petal.Length","3":"1.6"},{"1":"setosa","2":"Petal.Length","3":"1.9"},{"1":"setosa","2":"Petal.Length","3":"1.4"},{"1":"setosa","2":"Petal.Length","3":"1.6"},{"1":"setosa","2":"Petal.Length","3":"1.4"},{"1":"setosa","2":"Petal.Length","3":"1.5"},{"1":"setosa","2":"Petal.Length","3":"1.4"},{"1":"versicolor","2":"Petal.Length","3":"4.7"},{"1":"versicolor","2":"Petal.Length","3":"4.5"},{"1":"versicolor","2":"Petal.Length","3":"4.9"},{"1":"versicolor","2":"Petal.Length","3":"4.0"},{"1":"versicolor","2":"Petal.Length","3":"4.6"},{"1":"versicolor","2":"Petal.Length","3":"4.5"},{"1":"versicolor","2":"Petal.Length","3":"4.7"},{"1":"versicolor","2":"Petal.Length","3":"3.3"},{"1":"versicolor","2":"Petal.Length","3":"4.6"},{"1":"versicolor","2":"Petal.Length","3":"3.9"},{"1":"versicolor","2":"Petal.Length","3":"3.5"},{"1":"versicolor","2":"Petal.Length","3":"4.2"},{"1":"versicolor","2":"Petal.Length","3":"4.0"},{"1":"versicolor","2":"Petal.Length","3":"4.7"},{"1":"versicolor","2":"Petal.Length","3":"3.6"},{"1":"versicolor","2":"Petal.Length","3":"4.4"},{"1":"versicolor","2":"Petal.Length","3":"4.5"},{"1":"versicolor","2":"Petal.Length","3":"4.1"},{"1":"versicolor","2":"Petal.Length","3":"4.5"},{"1":"versicolor","2":"Petal.Length","3":"3.9"},{"1":"versicolor","2":"Petal.Length","3":"4.8"},{"1":"versicolor","2":"Petal.Length","3":"4.0"},{"1":"versicolor","2":"Petal.Length","3":"4.9"},{"1":"versicolor","2":"Petal.Length","3":"4.7"},{"1":"versicolor","2":"Petal.Length","3":"4.3"},{"1":"versicolor","2":"Petal.Length","3":"4.4"},{"1":"versicolor","2":"Petal.Length","3":"4.8"},{"1":"versicolor","2":"Petal.Length","3":"5.0"},{"1":"versicolor","2":"Petal.Length","3":"4.5"},{"1":"versicolor","2":"Petal.Length","3":"3.5"},{"1":"versicolor","2":"Petal.Length","3":"3.8"},{"1":"versicolor","2":"Petal.Length","3":"3.7"},{"1":"versicolor","2":"Petal.Length","3":"3.9"},{"1":"versicolor","2":"Petal.Length","3":"5.1"},{"1":"versicolor","2":"Petal.Length","3":"4.5"},{"1":"versicolor","2":"Petal.Length","3":"4.5"},{"1":"versicolor","2":"Petal.Length","3":"4.7"},{"1":"versicolor","2":"Petal.Length","3":"4.4"},{"1":"versicolor","2":"Petal.Length","3":"4.1"},{"1":"versicolor","2":"Petal.Length","3":"4.0"},{"1":"versicolor","2":"Petal.Length","3":"4.4"},{"1":"versicolor","2":"Petal.Length","3":"4.6"},{"1":"versicolor","2":"Petal.Length","3":"4.0"},{"1":"versicolor","2":"Petal.Length","3":"3.3"},{"1":"versicolor","2":"Petal.Length","3":"4.2"},{"1":"versicolor","2":"Petal.Length","3":"4.2"},{"1":"versicolor","2":"Petal.Length","3":"4.2"},{"1":"versicolor","2":"Petal.Length","3":"4.3"},{"1":"versicolor","2":"Petal.Length","3":"3.0"},{"1":"versicolor","2":"Petal.Length","3":"4.1"},{"1":"virginica","2":"Petal.Length","3":"6.0"},{"1":"virginica","2":"Petal.Length","3":"5.1"},{"1":"virginica","2":"Petal.Length","3":"5.9"},{"1":"virginica","2":"Petal.Length","3":"5.6"},{"1":"virginica","2":"Petal.Length","3":"5.8"},{"1":"virginica","2":"Petal.Length","3":"6.6"},{"1":"virginica","2":"Petal.Length","3":"4.5"},{"1":"virginica","2":"Petal.Length","3":"6.3"},{"1":"virginica","2":"Petal.Length","3":"5.8"},{"1":"virginica","2":"Petal.Length","3":"6.1"},{"1":"virginica","2":"Petal.Length","3":"5.1"},{"1":"virginica","2":"Petal.Length","3":"5.3"},{"1":"virginica","2":"Petal.Length","3":"5.5"},{"1":"virginica","2":"Petal.Length","3":"5.0"},{"1":"virginica","2":"Petal.Length","3":"5.1"},{"1":"virginica","2":"Petal.Length","3":"5.3"},{"1":"virginica","2":"Petal.Length","3":"5.5"},{"1":"virginica","2":"Petal.Length","3":"6.7"},{"1":"virginica","2":"Petal.Length","3":"6.9"},{"1":"virginica","2":"Petal.Length","3":"5.0"},{"1":"virginica","2":"Petal.Length","3":"5.7"},{"1":"virginica","2":"Petal.Length","3":"4.9"},{"1":"virginica","2":"Petal.Length","3":"6.7"},{"1":"virginica","2":"Petal.Length","3":"4.9"},{"1":"virginica","2":"Petal.Length","3":"5.7"},{"1":"virginica","2":"Petal.Length","3":"6.0"},{"1":"virginica","2":"Petal.Length","3":"4.8"},{"1":"virginica","2":"Petal.Length","3":"4.9"},{"1":"virginica","2":"Petal.Length","3":"5.6"},{"1":"virginica","2":"Petal.Length","3":"5.8"},{"1":"virginica","2":"Petal.Length","3":"6.1"},{"1":"virginica","2":"Petal.Length","3":"6.4"},{"1":"virginica","2":"Petal.Length","3":"5.6"},{"1":"virginica","2":"Petal.Length","3":"5.1"},{"1":"virginica","2":"Petal.Length","3":"5.6"},{"1":"virginica","2":"Petal.Length","3":"6.1"},{"1":"virginica","2":"Petal.Length","3":"5.6"},{"1":"virginica","2":"Petal.Length","3":"5.5"},{"1":"virginica","2":"Petal.Length","3":"4.8"},{"1":"virginica","2":"Petal.Length","3":"5.4"},{"1":"virginica","2":"Petal.Length","3":"5.6"},{"1":"virginica","2":"Petal.Length","3":"5.1"},{"1":"virginica","2":"Petal.Length","3":"5.1"},{"1":"virginica","2":"Petal.Length","3":"5.9"},{"1":"virginica","2":"Petal.Length","3":"5.7"},{"1":"virginica","2":"Petal.Length","3":"5.2"},{"1":"virginica","2":"Petal.Length","3":"5.0"},{"1":"virginica","2":"Petal.Length","3":"5.2"},{"1":"virginica","2":"Petal.Length","3":"5.4"},{"1":"virginica","2":"Petal.Length","3":"5.1"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.4"},{"1":"setosa","2":"Petal.Width","3":"0.3"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.1"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.1"},{"1":"setosa","2":"Petal.Width","3":"0.1"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.4"},{"1":"setosa","2":"Petal.Width","3":"0.4"},{"1":"setosa","2":"Petal.Width","3":"0.3"},{"1":"setosa","2":"Petal.Width","3":"0.3"},{"1":"setosa","2":"Petal.Width","3":"0.3"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.4"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.5"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.4"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.4"},{"1":"setosa","2":"Petal.Width","3":"0.1"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.1"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.3"},{"1":"setosa","2":"Petal.Width","3":"0.3"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.6"},{"1":"setosa","2":"Petal.Width","3":"0.4"},{"1":"setosa","2":"Petal.Width","3":"0.3"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"setosa","2":"Petal.Width","3":"0.2"},{"1":"versicolor","2":"Petal.Width","3":"1.4"},{"1":"versicolor","2":"Petal.Width","3":"1.5"},{"1":"versicolor","2":"Petal.Width","3":"1.5"},{"1":"versicolor","2":"Petal.Width","3":"1.3"},{"1":"versicolor","2":"Petal.Width","3":"1.5"},{"1":"versicolor","2":"Petal.Width","3":"1.3"},{"1":"versicolor","2":"Petal.Width","3":"1.6"},{"1":"versicolor","2":"Petal.Width","3":"1.0"},{"1":"versicolor","2":"Petal.Width","3":"1.3"},{"1":"versicolor","2":"Petal.Width","3":"1.4"},{"1":"versicolor","2":"Petal.Width","3":"1.0"},{"1":"versicolor","2":"Petal.Width","3":"1.5"},{"1":"versicolor","2":"Petal.Width","3":"1.0"},{"1":"versicolor","2":"Petal.Width","3":"1.4"},{"1":"versicolor","2":"Petal.Width","3":"1.3"},{"1":"versicolor","2":"Petal.Width","3":"1.4"},{"1":"versicolor","2":"Petal.Width","3":"1.5"},{"1":"versicolor","2":"Petal.Width","3":"1.0"},{"1":"versicolor","2":"Petal.Width","3":"1.5"},{"1":"versicolor","2":"Petal.Width","3":"1.1"},{"1":"versicolor","2":"Petal.Width","3":"1.8"},{"1":"versicolor","2":"Petal.Width","3":"1.3"},{"1":"versicolor","2":"Petal.Width","3":"1.5"},{"1":"versicolor","2":"Petal.Width","3":"1.2"},{"1":"versicolor","2":"Petal.Width","3":"1.3"},{"1":"versicolor","2":"Petal.Width","3":"1.4"},{"1":"versicolor","2":"Petal.Width","3":"1.4"},{"1":"versicolor","2":"Petal.Width","3":"1.7"},{"1":"versicolor","2":"Petal.Width","3":"1.5"},{"1":"versicolor","2":"Petal.Width","3":"1.0"},{"1":"versicolor","2":"Petal.Width","3":"1.1"},{"1":"versicolor","2":"Petal.Width","3":"1.0"},{"1":"versicolor","2":"Petal.Width","3":"1.2"},{"1":"versicolor","2":"Petal.Width","3":"1.6"},{"1":"versicolor","2":"Petal.Width","3":"1.5"},{"1":"versicolor","2":"Petal.Width","3":"1.6"},{"1":"versicolor","2":"Petal.Width","3":"1.5"},{"1":"versicolor","2":"Petal.Width","3":"1.3"},{"1":"versicolor","2":"Petal.Width","3":"1.3"},{"1":"versicolor","2":"Petal.Width","3":"1.3"},{"1":"versicolor","2":"Petal.Width","3":"1.2"},{"1":"versicolor","2":"Petal.Width","3":"1.4"},{"1":"versicolor","2":"Petal.Width","3":"1.2"},{"1":"versicolor","2":"Petal.Width","3":"1.0"},{"1":"versicolor","2":"Petal.Width","3":"1.3"},{"1":"versicolor","2":"Petal.Width","3":"1.2"},{"1":"versicolor","2":"Petal.Width","3":"1.3"},{"1":"versicolor","2":"Petal.Width","3":"1.3"},{"1":"versicolor","2":"Petal.Width","3":"1.1"},{"1":"versicolor","2":"Petal.Width","3":"1.3"},{"1":"virginica","2":"Petal.Width","3":"2.5"},{"1":"virginica","2":"Petal.Width","3":"1.9"},{"1":"virginica","2":"Petal.Width","3":"2.1"},{"1":"virginica","2":"Petal.Width","3":"1.8"},{"1":"virginica","2":"Petal.Width","3":"2.2"},{"1":"virginica","2":"Petal.Width","3":"2.1"},{"1":"virginica","2":"Petal.Width","3":"1.7"},{"1":"virginica","2":"Petal.Width","3":"1.8"},{"1":"virginica","2":"Petal.Width","3":"1.8"},{"1":"virginica","2":"Petal.Width","3":"2.5"},{"1":"virginica","2":"Petal.Width","3":"2.0"},{"1":"virginica","2":"Petal.Width","3":"1.9"},{"1":"virginica","2":"Petal.Width","3":"2.1"},{"1":"virginica","2":"Petal.Width","3":"2.0"},{"1":"virginica","2":"Petal.Width","3":"2.4"},{"1":"virginica","2":"Petal.Width","3":"2.3"},{"1":"virginica","2":"Petal.Width","3":"1.8"},{"1":"virginica","2":"Petal.Width","3":"2.2"},{"1":"virginica","2":"Petal.Width","3":"2.3"},{"1":"virginica","2":"Petal.Width","3":"1.5"},{"1":"virginica","2":"Petal.Width","3":"2.3"},{"1":"virginica","2":"Petal.Width","3":"2.0"},{"1":"virginica","2":"Petal.Width","3":"2.0"},{"1":"virginica","2":"Petal.Width","3":"1.8"},{"1":"virginica","2":"Petal.Width","3":"2.1"},{"1":"virginica","2":"Petal.Width","3":"1.8"},{"1":"virginica","2":"Petal.Width","3":"1.8"},{"1":"virginica","2":"Petal.Width","3":"1.8"},{"1":"virginica","2":"Petal.Width","3":"2.1"},{"1":"virginica","2":"Petal.Width","3":"1.6"},{"1":"virginica","2":"Petal.Width","3":"1.9"},{"1":"virginica","2":"Petal.Width","3":"2.0"},{"1":"virginica","2":"Petal.Width","3":"2.2"},{"1":"virginica","2":"Petal.Width","3":"1.5"},{"1":"virginica","2":"Petal.Width","3":"1.4"},{"1":"virginica","2":"Petal.Width","3":"2.3"},{"1":"virginica","2":"Petal.Width","3":"2.4"},{"1":"virginica","2":"Petal.Width","3":"1.8"},{"1":"virginica","2":"Petal.Width","3":"1.8"},{"1":"virginica","2":"Petal.Width","3":"2.1"},{"1":"virginica","2":"Petal.Width","3":"2.4"},{"1":"virginica","2":"Petal.Width","3":"2.3"},{"1":"virginica","2":"Petal.Width","3":"1.9"},{"1":"virginica","2":"Petal.Width","3":"2.3"},{"1":"virginica","2":"Petal.Width","3":"2.5"},{"1":"virginica","2":"Petal.Width","3":"2.3"},{"1":"virginica","2":"Petal.Width","3":"1.9"},{"1":"virginica","2":"Petal.Width","3":"2.0"},{"1":"virginica","2":"Petal.Width","3":"2.3"},{"1":"virginica","2":"Petal.Width","3":"1.8"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[6],"max":[6]},"pages":{}}}
+  </script>
+</div>
+</div>
+<p>When you spread the results from <code>gather</code>, you will get an Error message because there is no unique identifier.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+iris %&gt;%
+  gather(var, value, -Species) %&gt;%
+  spread(var, value)
+# Error: Duplicate identifiers for rows (301, 302, 303, 304, 305, 
+# 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 
+# ...</code></pre>
+</div>
+<p>If you add row number as ID, things will be different.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+iris %&gt;%
+  mutate(id = row_number()) %&gt;%
+  gather(var, value, -(Species:id)) %&gt;%
+  spread(var, value) %&gt;%
+  paged_table(options = list(rows.print = 6))</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Species"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["id"],"name":[2],"type":["int"],"align":["right"]},{"label":["Petal.Length"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Sepal.Length"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"setosa","2":"1","3":"1.4","4":"0.2","5":"5.1","6":"3.5"},{"1":"setosa","2":"2","3":"1.4","4":"0.2","5":"4.9","6":"3.0"},{"1":"setosa","2":"3","3":"1.3","4":"0.2","5":"4.7","6":"3.2"},{"1":"setosa","2":"4","3":"1.5","4":"0.2","5":"4.6","6":"3.1"},{"1":"setosa","2":"5","3":"1.4","4":"0.2","5":"5.0","6":"3.6"},{"1":"setosa","2":"6","3":"1.7","4":"0.4","5":"5.4","6":"3.9"},{"1":"setosa","2":"7","3":"1.4","4":"0.3","5":"4.6","6":"3.4"},{"1":"setosa","2":"8","3":"1.5","4":"0.2","5":"5.0","6":"3.4"},{"1":"setosa","2":"9","3":"1.4","4":"0.2","5":"4.4","6":"2.9"},{"1":"setosa","2":"10","3":"1.5","4":"0.1","5":"4.9","6":"3.1"},{"1":"setosa","2":"11","3":"1.5","4":"0.2","5":"5.4","6":"3.7"},{"1":"setosa","2":"12","3":"1.6","4":"0.2","5":"4.8","6":"3.4"},{"1":"setosa","2":"13","3":"1.4","4":"0.1","5":"4.8","6":"3.0"},{"1":"setosa","2":"14","3":"1.1","4":"0.1","5":"4.3","6":"3.0"},{"1":"setosa","2":"15","3":"1.2","4":"0.2","5":"5.8","6":"4.0"},{"1":"setosa","2":"16","3":"1.5","4":"0.4","5":"5.7","6":"4.4"},{"1":"setosa","2":"17","3":"1.3","4":"0.4","5":"5.4","6":"3.9"},{"1":"setosa","2":"18","3":"1.4","4":"0.3","5":"5.1","6":"3.5"},{"1":"setosa","2":"19","3":"1.7","4":"0.3","5":"5.7","6":"3.8"},{"1":"setosa","2":"20","3":"1.5","4":"0.3","5":"5.1","6":"3.8"},{"1":"setosa","2":"21","3":"1.7","4":"0.2","5":"5.4","6":"3.4"},{"1":"setosa","2":"22","3":"1.5","4":"0.4","5":"5.1","6":"3.7"},{"1":"setosa","2":"23","3":"1.0","4":"0.2","5":"4.6","6":"3.6"},{"1":"setosa","2":"24","3":"1.7","4":"0.5","5":"5.1","6":"3.3"},{"1":"setosa","2":"25","3":"1.9","4":"0.2","5":"4.8","6":"3.4"},{"1":"setosa","2":"26","3":"1.6","4":"0.2","5":"5.0","6":"3.0"},{"1":"setosa","2":"27","3":"1.6","4":"0.4","5":"5.0","6":"3.4"},{"1":"setosa","2":"28","3":"1.5","4":"0.2","5":"5.2","6":"3.5"},{"1":"setosa","2":"29","3":"1.4","4":"0.2","5":"5.2","6":"3.4"},{"1":"setosa","2":"30","3":"1.6","4":"0.2","5":"4.7","6":"3.2"},{"1":"setosa","2":"31","3":"1.6","4":"0.2","5":"4.8","6":"3.1"},{"1":"setosa","2":"32","3":"1.5","4":"0.4","5":"5.4","6":"3.4"},{"1":"setosa","2":"33","3":"1.5","4":"0.1","5":"5.2","6":"4.1"},{"1":"setosa","2":"34","3":"1.4","4":"0.2","5":"5.5","6":"4.2"},{"1":"setosa","2":"35","3":"1.5","4":"0.2","5":"4.9","6":"3.1"},{"1":"setosa","2":"36","3":"1.2","4":"0.2","5":"5.0","6":"3.2"},{"1":"setosa","2":"37","3":"1.3","4":"0.2","5":"5.5","6":"3.5"},{"1":"setosa","2":"38","3":"1.4","4":"0.1","5":"4.9","6":"3.6"},{"1":"setosa","2":"39","3":"1.3","4":"0.2","5":"4.4","6":"3.0"},{"1":"setosa","2":"40","3":"1.5","4":"0.2","5":"5.1","6":"3.4"},{"1":"setosa","2":"41","3":"1.3","4":"0.3","5":"5.0","6":"3.5"},{"1":"setosa","2":"42","3":"1.3","4":"0.3","5":"4.5","6":"2.3"},{"1":"setosa","2":"43","3":"1.3","4":"0.2","5":"4.4","6":"3.2"},{"1":"setosa","2":"44","3":"1.6","4":"0.6","5":"5.0","6":"3.5"},{"1":"setosa","2":"45","3":"1.9","4":"0.4","5":"5.1","6":"3.8"},{"1":"setosa","2":"46","3":"1.4","4":"0.3","5":"4.8","6":"3.0"},{"1":"setosa","2":"47","3":"1.6","4":"0.2","5":"5.1","6":"3.8"},{"1":"setosa","2":"48","3":"1.4","4":"0.2","5":"4.6","6":"3.2"},{"1":"setosa","2":"49","3":"1.5","4":"0.2","5":"5.3","6":"3.7"},{"1":"setosa","2":"50","3":"1.4","4":"0.2","5":"5.0","6":"3.3"},{"1":"versicolor","2":"51","3":"4.7","4":"1.4","5":"7.0","6":"3.2"},{"1":"versicolor","2":"52","3":"4.5","4":"1.5","5":"6.4","6":"3.2"},{"1":"versicolor","2":"53","3":"4.9","4":"1.5","5":"6.9","6":"3.1"},{"1":"versicolor","2":"54","3":"4.0","4":"1.3","5":"5.5","6":"2.3"},{"1":"versicolor","2":"55","3":"4.6","4":"1.5","5":"6.5","6":"2.8"},{"1":"versicolor","2":"56","3":"4.5","4":"1.3","5":"5.7","6":"2.8"},{"1":"versicolor","2":"57","3":"4.7","4":"1.6","5":"6.3","6":"3.3"},{"1":"versicolor","2":"58","3":"3.3","4":"1.0","5":"4.9","6":"2.4"},{"1":"versicolor","2":"59","3":"4.6","4":"1.3","5":"6.6","6":"2.9"},{"1":"versicolor","2":"60","3":"3.9","4":"1.4","5":"5.2","6":"2.7"},{"1":"versicolor","2":"61","3":"3.5","4":"1.0","5":"5.0","6":"2.0"},{"1":"versicolor","2":"62","3":"4.2","4":"1.5","5":"5.9","6":"3.0"},{"1":"versicolor","2":"63","3":"4.0","4":"1.0","5":"6.0","6":"2.2"},{"1":"versicolor","2":"64","3":"4.7","4":"1.4","5":"6.1","6":"2.9"},{"1":"versicolor","2":"65","3":"3.6","4":"1.3","5":"5.6","6":"2.9"},{"1":"versicolor","2":"66","3":"4.4","4":"1.4","5":"6.7","6":"3.1"},{"1":"versicolor","2":"67","3":"4.5","4":"1.5","5":"5.6","6":"3.0"},{"1":"versicolor","2":"68","3":"4.1","4":"1.0","5":"5.8","6":"2.7"},{"1":"versicolor","2":"69","3":"4.5","4":"1.5","5":"6.2","6":"2.2"},{"1":"versicolor","2":"70","3":"3.9","4":"1.1","5":"5.6","6":"2.5"},{"1":"versicolor","2":"71","3":"4.8","4":"1.8","5":"5.9","6":"3.2"},{"1":"versicolor","2":"72","3":"4.0","4":"1.3","5":"6.1","6":"2.8"},{"1":"versicolor","2":"73","3":"4.9","4":"1.5","5":"6.3","6":"2.5"},{"1":"versicolor","2":"74","3":"4.7","4":"1.2","5":"6.1","6":"2.8"},{"1":"versicolor","2":"75","3":"4.3","4":"1.3","5":"6.4","6":"2.9"},{"1":"versicolor","2":"76","3":"4.4","4":"1.4","5":"6.6","6":"3.0"},{"1":"versicolor","2":"77","3":"4.8","4":"1.4","5":"6.8","6":"2.8"},{"1":"versicolor","2":"78","3":"5.0","4":"1.7","5":"6.7","6":"3.0"},{"1":"versicolor","2":"79","3":"4.5","4":"1.5","5":"6.0","6":"2.9"},{"1":"versicolor","2":"80","3":"3.5","4":"1.0","5":"5.7","6":"2.6"},{"1":"versicolor","2":"81","3":"3.8","4":"1.1","5":"5.5","6":"2.4"},{"1":"versicolor","2":"82","3":"3.7","4":"1.0","5":"5.5","6":"2.4"},{"1":"versicolor","2":"83","3":"3.9","4":"1.2","5":"5.8","6":"2.7"},{"1":"versicolor","2":"84","3":"5.1","4":"1.6","5":"6.0","6":"2.7"},{"1":"versicolor","2":"85","3":"4.5","4":"1.5","5":"5.4","6":"3.0"},{"1":"versicolor","2":"86","3":"4.5","4":"1.6","5":"6.0","6":"3.4"},{"1":"versicolor","2":"87","3":"4.7","4":"1.5","5":"6.7","6":"3.1"},{"1":"versicolor","2":"88","3":"4.4","4":"1.3","5":"6.3","6":"2.3"},{"1":"versicolor","2":"89","3":"4.1","4":"1.3","5":"5.6","6":"3.0"},{"1":"versicolor","2":"90","3":"4.0","4":"1.3","5":"5.5","6":"2.5"},{"1":"versicolor","2":"91","3":"4.4","4":"1.2","5":"5.5","6":"2.6"},{"1":"versicolor","2":"92","3":"4.6","4":"1.4","5":"6.1","6":"3.0"},{"1":"versicolor","2":"93","3":"4.0","4":"1.2","5":"5.8","6":"2.6"},{"1":"versicolor","2":"94","3":"3.3","4":"1.0","5":"5.0","6":"2.3"},{"1":"versicolor","2":"95","3":"4.2","4":"1.3","5":"5.6","6":"2.7"},{"1":"versicolor","2":"96","3":"4.2","4":"1.2","5":"5.7","6":"3.0"},{"1":"versicolor","2":"97","3":"4.2","4":"1.3","5":"5.7","6":"2.9"},{"1":"versicolor","2":"98","3":"4.3","4":"1.3","5":"6.2","6":"2.9"},{"1":"versicolor","2":"99","3":"3.0","4":"1.1","5":"5.1","6":"2.5"},{"1":"versicolor","2":"100","3":"4.1","4":"1.3","5":"5.7","6":"2.8"},{"1":"virginica","2":"101","3":"6.0","4":"2.5","5":"6.3","6":"3.3"},{"1":"virginica","2":"102","3":"5.1","4":"1.9","5":"5.8","6":"2.7"},{"1":"virginica","2":"103","3":"5.9","4":"2.1","5":"7.1","6":"3.0"},{"1":"virginica","2":"104","3":"5.6","4":"1.8","5":"6.3","6":"2.9"},{"1":"virginica","2":"105","3":"5.8","4":"2.2","5":"6.5","6":"3.0"},{"1":"virginica","2":"106","3":"6.6","4":"2.1","5":"7.6","6":"3.0"},{"1":"virginica","2":"107","3":"4.5","4":"1.7","5":"4.9","6":"2.5"},{"1":"virginica","2":"108","3":"6.3","4":"1.8","5":"7.3","6":"2.9"},{"1":"virginica","2":"109","3":"5.8","4":"1.8","5":"6.7","6":"2.5"},{"1":"virginica","2":"110","3":"6.1","4":"2.5","5":"7.2","6":"3.6"},{"1":"virginica","2":"111","3":"5.1","4":"2.0","5":"6.5","6":"3.2"},{"1":"virginica","2":"112","3":"5.3","4":"1.9","5":"6.4","6":"2.7"},{"1":"virginica","2":"113","3":"5.5","4":"2.1","5":"6.8","6":"3.0"},{"1":"virginica","2":"114","3":"5.0","4":"2.0","5":"5.7","6":"2.5"},{"1":"virginica","2":"115","3":"5.1","4":"2.4","5":"5.8","6":"2.8"},{"1":"virginica","2":"116","3":"5.3","4":"2.3","5":"6.4","6":"3.2"},{"1":"virginica","2":"117","3":"5.5","4":"1.8","5":"6.5","6":"3.0"},{"1":"virginica","2":"118","3":"6.7","4":"2.2","5":"7.7","6":"3.8"},{"1":"virginica","2":"119","3":"6.9","4":"2.3","5":"7.7","6":"2.6"},{"1":"virginica","2":"120","3":"5.0","4":"1.5","5":"6.0","6":"2.2"},{"1":"virginica","2":"121","3":"5.7","4":"2.3","5":"6.9","6":"3.2"},{"1":"virginica","2":"122","3":"4.9","4":"2.0","5":"5.6","6":"2.8"},{"1":"virginica","2":"123","3":"6.7","4":"2.0","5":"7.7","6":"2.8"},{"1":"virginica","2":"124","3":"4.9","4":"1.8","5":"6.3","6":"2.7"},{"1":"virginica","2":"125","3":"5.7","4":"2.1","5":"6.7","6":"3.3"},{"1":"virginica","2":"126","3":"6.0","4":"1.8","5":"7.2","6":"3.2"},{"1":"virginica","2":"127","3":"4.8","4":"1.8","5":"6.2","6":"2.8"},{"1":"virginica","2":"128","3":"4.9","4":"1.8","5":"6.1","6":"3.0"},{"1":"virginica","2":"129","3":"5.6","4":"2.1","5":"6.4","6":"2.8"},{"1":"virginica","2":"130","3":"5.8","4":"1.6","5":"7.2","6":"3.0"},{"1":"virginica","2":"131","3":"6.1","4":"1.9","5":"7.4","6":"2.8"},{"1":"virginica","2":"132","3":"6.4","4":"2.0","5":"7.9","6":"3.8"},{"1":"virginica","2":"133","3":"5.6","4":"2.2","5":"6.4","6":"2.8"},{"1":"virginica","2":"134","3":"5.1","4":"1.5","5":"6.3","6":"2.8"},{"1":"virginica","2":"135","3":"5.6","4":"1.4","5":"6.1","6":"2.6"},{"1":"virginica","2":"136","3":"6.1","4":"2.3","5":"7.7","6":"3.0"},{"1":"virginica","2":"137","3":"5.6","4":"2.4","5":"6.3","6":"3.4"},{"1":"virginica","2":"138","3":"5.5","4":"1.8","5":"6.4","6":"3.1"},{"1":"virginica","2":"139","3":"4.8","4":"1.8","5":"6.0","6":"3.0"},{"1":"virginica","2":"140","3":"5.4","4":"2.1","5":"6.9","6":"3.1"},{"1":"virginica","2":"141","3":"5.6","4":"2.4","5":"6.7","6":"3.1"},{"1":"virginica","2":"142","3":"5.1","4":"2.3","5":"6.9","6":"3.1"},{"1":"virginica","2":"143","3":"5.1","4":"1.9","5":"5.8","6":"2.7"},{"1":"virginica","2":"144","3":"5.9","4":"2.3","5":"6.8","6":"3.2"},{"1":"virginica","2":"145","3":"5.7","4":"2.5","5":"6.7","6":"3.3"},{"1":"virginica","2":"146","3":"5.2","4":"2.3","5":"6.7","6":"3.0"},{"1":"virginica","2":"147","3":"5.0","4":"1.9","5":"6.3","6":"2.5"},{"1":"virginica","2":"148","3":"5.2","4":"2.0","5":"6.5","6":"3.0"},{"1":"virginica","2":"149","3":"5.4","4":"2.3","5":"6.2","6":"3.4"},{"1":"virginica","2":"150","3":"5.1","4":"1.8","5":"5.9","6":"3.0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[6],"max":[6]},"pages":{}}}
+  </script>
+</div>
+</div>
+<h2 id="gather-separate-spread"><code>gather</code> + <code>separate</code> + <code>spread</code></h2>
+<p>It may seem meaningless to gather and then spread but you will see the point if you add <code>separate</code> in the pipeline. As you can see in the example below, we split the <code>var</code> column we got previously into two columns. By default, <code>separate</code> will split columns by any symbols but you can always write customized <code>regular expression</code> or position index.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+iris %&gt;%
+  mutate(id = row_number()) %&gt;%
+  gather(var, value, -(Species:id)) %&gt;%
+  separate(var, into = c(&quot;loc&quot;, &quot;var&quot;)) %&gt;%
+  paged_table(options = list(rows.print = 6))</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Species"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["id"],"name":[2],"type":["int"],"align":["right"]},{"label":["loc"],"name":[3],"type":["chr"],"align":["left"]},{"label":["var"],"name":[4],"type":["chr"],"align":["left"]},{"label":["value"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"setosa","2":"1","3":"Sepal","4":"Length","5":"5.1"},{"1":"setosa","2":"2","3":"Sepal","4":"Length","5":"4.9"},{"1":"setosa","2":"3","3":"Sepal","4":"Length","5":"4.7"},{"1":"setosa","2":"4","3":"Sepal","4":"Length","5":"4.6"},{"1":"setosa","2":"5","3":"Sepal","4":"Length","5":"5.0"},{"1":"setosa","2":"6","3":"Sepal","4":"Length","5":"5.4"},{"1":"setosa","2":"7","3":"Sepal","4":"Length","5":"4.6"},{"1":"setosa","2":"8","3":"Sepal","4":"Length","5":"5.0"},{"1":"setosa","2":"9","3":"Sepal","4":"Length","5":"4.4"},{"1":"setosa","2":"10","3":"Sepal","4":"Length","5":"4.9"},{"1":"setosa","2":"11","3":"Sepal","4":"Length","5":"5.4"},{"1":"setosa","2":"12","3":"Sepal","4":"Length","5":"4.8"},{"1":"setosa","2":"13","3":"Sepal","4":"Length","5":"4.8"},{"1":"setosa","2":"14","3":"Sepal","4":"Length","5":"4.3"},{"1":"setosa","2":"15","3":"Sepal","4":"Length","5":"5.8"},{"1":"setosa","2":"16","3":"Sepal","4":"Length","5":"5.7"},{"1":"setosa","2":"17","3":"Sepal","4":"Length","5":"5.4"},{"1":"setosa","2":"18","3":"Sepal","4":"Length","5":"5.1"},{"1":"setosa","2":"19","3":"Sepal","4":"Length","5":"5.7"},{"1":"setosa","2":"20","3":"Sepal","4":"Length","5":"5.1"},{"1":"setosa","2":"21","3":"Sepal","4":"Length","5":"5.4"},{"1":"setosa","2":"22","3":"Sepal","4":"Length","5":"5.1"},{"1":"setosa","2":"23","3":"Sepal","4":"Length","5":"4.6"},{"1":"setosa","2":"24","3":"Sepal","4":"Length","5":"5.1"},{"1":"setosa","2":"25","3":"Sepal","4":"Length","5":"4.8"},{"1":"setosa","2":"26","3":"Sepal","4":"Length","5":"5.0"},{"1":"setosa","2":"27","3":"Sepal","4":"Length","5":"5.0"},{"1":"setosa","2":"28","3":"Sepal","4":"Length","5":"5.2"},{"1":"setosa","2":"29","3":"Sepal","4":"Length","5":"5.2"},{"1":"setosa","2":"30","3":"Sepal","4":"Length","5":"4.7"},{"1":"setosa","2":"31","3":"Sepal","4":"Length","5":"4.8"},{"1":"setosa","2":"32","3":"Sepal","4":"Length","5":"5.4"},{"1":"setosa","2":"33","3":"Sepal","4":"Length","5":"5.2"},{"1":"setosa","2":"34","3":"Sepal","4":"Length","5":"5.5"},{"1":"setosa","2":"35","3":"Sepal","4":"Length","5":"4.9"},{"1":"setosa","2":"36","3":"Sepal","4":"Length","5":"5.0"},{"1":"setosa","2":"37","3":"Sepal","4":"Length","5":"5.5"},{"1":"setosa","2":"38","3":"Sepal","4":"Length","5":"4.9"},{"1":"setosa","2":"39","3":"Sepal","4":"Length","5":"4.4"},{"1":"setosa","2":"40","3":"Sepal","4":"Length","5":"5.1"},{"1":"setosa","2":"41","3":"Sepal","4":"Length","5":"5.0"},{"1":"setosa","2":"42","3":"Sepal","4":"Length","5":"4.5"},{"1":"setosa","2":"43","3":"Sepal","4":"Length","5":"4.4"},{"1":"setosa","2":"44","3":"Sepal","4":"Length","5":"5.0"},{"1":"setosa","2":"45","3":"Sepal","4":"Length","5":"5.1"},{"1":"setosa","2":"46","3":"Sepal","4":"Length","5":"4.8"},{"1":"setosa","2":"47","3":"Sepal","4":"Length","5":"5.1"},{"1":"setosa","2":"48","3":"Sepal","4":"Length","5":"4.6"},{"1":"setosa","2":"49","3":"Sepal","4":"Length","5":"5.3"},{"1":"setosa","2":"50","3":"Sepal","4":"Length","5":"5.0"},{"1":"versicolor","2":"51","3":"Sepal","4":"Length","5":"7.0"},{"1":"versicolor","2":"52","3":"Sepal","4":"Length","5":"6.4"},{"1":"versicolor","2":"53","3":"Sepal","4":"Length","5":"6.9"},{"1":"versicolor","2":"54","3":"Sepal","4":"Length","5":"5.5"},{"1":"versicolor","2":"55","3":"Sepal","4":"Length","5":"6.5"},{"1":"versicolor","2":"56","3":"Sepal","4":"Length","5":"5.7"},{"1":"versicolor","2":"57","3":"Sepal","4":"Length","5":"6.3"},{"1":"versicolor","2":"58","3":"Sepal","4":"Length","5":"4.9"},{"1":"versicolor","2":"59","3":"Sepal","4":"Length","5":"6.6"},{"1":"versicolor","2":"60","3":"Sepal","4":"Length","5":"5.2"},{"1":"versicolor","2":"61","3":"Sepal","4":"Length","5":"5.0"},{"1":"versicolor","2":"62","3":"Sepal","4":"Length","5":"5.9"},{"1":"versicolor","2":"63","3":"Sepal","4":"Length","5":"6.0"},{"1":"versicolor","2":"64","3":"Sepal","4":"Length","5":"6.1"},{"1":"versicolor","2":"65","3":"Sepal","4":"Length","5":"5.6"},{"1":"versicolor","2":"66","3":"Sepal","4":"Length","5":"6.7"},{"1":"versicolor","2":"67","3":"Sepal","4":"Length","5":"5.6"},{"1":"versicolor","2":"68","3":"Sepal","4":"Length","5":"5.8"},{"1":"versicolor","2":"69","3":"Sepal","4":"Length","5":"6.2"},{"1":"versicolor","2":"70","3":"Sepal","4":"Length","5":"5.6"},{"1":"versicolor","2":"71","3":"Sepal","4":"Length","5":"5.9"},{"1":"versicolor","2":"72","3":"Sepal","4":"Length","5":"6.1"},{"1":"versicolor","2":"73","3":"Sepal","4":"Length","5":"6.3"},{"1":"versicolor","2":"74","3":"Sepal","4":"Length","5":"6.1"},{"1":"versicolor","2":"75","3":"Sepal","4":"Length","5":"6.4"},{"1":"versicolor","2":"76","3":"Sepal","4":"Length","5":"6.6"},{"1":"versicolor","2":"77","3":"Sepal","4":"Length","5":"6.8"},{"1":"versicolor","2":"78","3":"Sepal","4":"Length","5":"6.7"},{"1":"versicolor","2":"79","3":"Sepal","4":"Length","5":"6.0"},{"1":"versicolor","2":"80","3":"Sepal","4":"Length","5":"5.7"},{"1":"versicolor","2":"81","3":"Sepal","4":"Length","5":"5.5"},{"1":"versicolor","2":"82","3":"Sepal","4":"Length","5":"5.5"},{"1":"versicolor","2":"83","3":"Sepal","4":"Length","5":"5.8"},{"1":"versicolor","2":"84","3":"Sepal","4":"Length","5":"6.0"},{"1":"versicolor","2":"85","3":"Sepal","4":"Length","5":"5.4"},{"1":"versicolor","2":"86","3":"Sepal","4":"Length","5":"6.0"},{"1":"versicolor","2":"87","3":"Sepal","4":"Length","5":"6.7"},{"1":"versicolor","2":"88","3":"Sepal","4":"Length","5":"6.3"},{"1":"versicolor","2":"89","3":"Sepal","4":"Length","5":"5.6"},{"1":"versicolor","2":"90","3":"Sepal","4":"Length","5":"5.5"},{"1":"versicolor","2":"91","3":"Sepal","4":"Length","5":"5.5"},{"1":"versicolor","2":"92","3":"Sepal","4":"Length","5":"6.1"},{"1":"versicolor","2":"93","3":"Sepal","4":"Length","5":"5.8"},{"1":"versicolor","2":"94","3":"Sepal","4":"Length","5":"5.0"},{"1":"versicolor","2":"95","3":"Sepal","4":"Length","5":"5.6"},{"1":"versicolor","2":"96","3":"Sepal","4":"Length","5":"5.7"},{"1":"versicolor","2":"97","3":"Sepal","4":"Length","5":"5.7"},{"1":"versicolor","2":"98","3":"Sepal","4":"Length","5":"6.2"},{"1":"versicolor","2":"99","3":"Sepal","4":"Length","5":"5.1"},{"1":"versicolor","2":"100","3":"Sepal","4":"Length","5":"5.7"},{"1":"virginica","2":"101","3":"Sepal","4":"Length","5":"6.3"},{"1":"virginica","2":"102","3":"Sepal","4":"Length","5":"5.8"},{"1":"virginica","2":"103","3":"Sepal","4":"Length","5":"7.1"},{"1":"virginica","2":"104","3":"Sepal","4":"Length","5":"6.3"},{"1":"virginica","2":"105","3":"Sepal","4":"Length","5":"6.5"},{"1":"virginica","2":"106","3":"Sepal","4":"Length","5":"7.6"},{"1":"virginica","2":"107","3":"Sepal","4":"Length","5":"4.9"},{"1":"virginica","2":"108","3":"Sepal","4":"Length","5":"7.3"},{"1":"virginica","2":"109","3":"Sepal","4":"Length","5":"6.7"},{"1":"virginica","2":"110","3":"Sepal","4":"Length","5":"7.2"},{"1":"virginica","2":"111","3":"Sepal","4":"Length","5":"6.5"},{"1":"virginica","2":"112","3":"Sepal","4":"Length","5":"6.4"},{"1":"virginica","2":"113","3":"Sepal","4":"Length","5":"6.8"},{"1":"virginica","2":"114","3":"Sepal","4":"Length","5":"5.7"},{"1":"virginica","2":"115","3":"Sepal","4":"Length","5":"5.8"},{"1":"virginica","2":"116","3":"Sepal","4":"Length","5":"6.4"},{"1":"virginica","2":"117","3":"Sepal","4":"Length","5":"6.5"},{"1":"virginica","2":"118","3":"Sepal","4":"Length","5":"7.7"},{"1":"virginica","2":"119","3":"Sepal","4":"Length","5":"7.7"},{"1":"virginica","2":"120","3":"Sepal","4":"Length","5":"6.0"},{"1":"virginica","2":"121","3":"Sepal","4":"Length","5":"6.9"},{"1":"virginica","2":"122","3":"Sepal","4":"Length","5":"5.6"},{"1":"virginica","2":"123","3":"Sepal","4":"Length","5":"7.7"},{"1":"virginica","2":"124","3":"Sepal","4":"Length","5":"6.3"},{"1":"virginica","2":"125","3":"Sepal","4":"Length","5":"6.7"},{"1":"virginica","2":"126","3":"Sepal","4":"Length","5":"7.2"},{"1":"virginica","2":"127","3":"Sepal","4":"Length","5":"6.2"},{"1":"virginica","2":"128","3":"Sepal","4":"Length","5":"6.1"},{"1":"virginica","2":"129","3":"Sepal","4":"Length","5":"6.4"},{"1":"virginica","2":"130","3":"Sepal","4":"Length","5":"7.2"},{"1":"virginica","2":"131","3":"Sepal","4":"Length","5":"7.4"},{"1":"virginica","2":"132","3":"Sepal","4":"Length","5":"7.9"},{"1":"virginica","2":"133","3":"Sepal","4":"Length","5":"6.4"},{"1":"virginica","2":"134","3":"Sepal","4":"Length","5":"6.3"},{"1":"virginica","2":"135","3":"Sepal","4":"Length","5":"6.1"},{"1":"virginica","2":"136","3":"Sepal","4":"Length","5":"7.7"},{"1":"virginica","2":"137","3":"Sepal","4":"Length","5":"6.3"},{"1":"virginica","2":"138","3":"Sepal","4":"Length","5":"6.4"},{"1":"virginica","2":"139","3":"Sepal","4":"Length","5":"6.0"},{"1":"virginica","2":"140","3":"Sepal","4":"Length","5":"6.9"},{"1":"virginica","2":"141","3":"Sepal","4":"Length","5":"6.7"},{"1":"virginica","2":"142","3":"Sepal","4":"Length","5":"6.9"},{"1":"virginica","2":"143","3":"Sepal","4":"Length","5":"5.8"},{"1":"virginica","2":"144","3":"Sepal","4":"Length","5":"6.8"},{"1":"virginica","2":"145","3":"Sepal","4":"Length","5":"6.7"},{"1":"virginica","2":"146","3":"Sepal","4":"Length","5":"6.7"},{"1":"virginica","2":"147","3":"Sepal","4":"Length","5":"6.3"},{"1":"virginica","2":"148","3":"Sepal","4":"Length","5":"6.5"},{"1":"virginica","2":"149","3":"Sepal","4":"Length","5":"6.2"},{"1":"virginica","2":"150","3":"Sepal","4":"Length","5":"5.9"},{"1":"setosa","2":"1","3":"Sepal","4":"Width","5":"3.5"},{"1":"setosa","2":"2","3":"Sepal","4":"Width","5":"3.0"},{"1":"setosa","2":"3","3":"Sepal","4":"Width","5":"3.2"},{"1":"setosa","2":"4","3":"Sepal","4":"Width","5":"3.1"},{"1":"setosa","2":"5","3":"Sepal","4":"Width","5":"3.6"},{"1":"setosa","2":"6","3":"Sepal","4":"Width","5":"3.9"},{"1":"setosa","2":"7","3":"Sepal","4":"Width","5":"3.4"},{"1":"setosa","2":"8","3":"Sepal","4":"Width","5":"3.4"},{"1":"setosa","2":"9","3":"Sepal","4":"Width","5":"2.9"},{"1":"setosa","2":"10","3":"Sepal","4":"Width","5":"3.1"},{"1":"setosa","2":"11","3":"Sepal","4":"Width","5":"3.7"},{"1":"setosa","2":"12","3":"Sepal","4":"Width","5":"3.4"},{"1":"setosa","2":"13","3":"Sepal","4":"Width","5":"3.0"},{"1":"setosa","2":"14","3":"Sepal","4":"Width","5":"3.0"},{"1":"setosa","2":"15","3":"Sepal","4":"Width","5":"4.0"},{"1":"setosa","2":"16","3":"Sepal","4":"Width","5":"4.4"},{"1":"setosa","2":"17","3":"Sepal","4":"Width","5":"3.9"},{"1":"setosa","2":"18","3":"Sepal","4":"Width","5":"3.5"},{"1":"setosa","2":"19","3":"Sepal","4":"Width","5":"3.8"},{"1":"setosa","2":"20","3":"Sepal","4":"Width","5":"3.8"},{"1":"setosa","2":"21","3":"Sepal","4":"Width","5":"3.4"},{"1":"setosa","2":"22","3":"Sepal","4":"Width","5":"3.7"},{"1":"setosa","2":"23","3":"Sepal","4":"Width","5":"3.6"},{"1":"setosa","2":"24","3":"Sepal","4":"Width","5":"3.3"},{"1":"setosa","2":"25","3":"Sepal","4":"Width","5":"3.4"},{"1":"setosa","2":"26","3":"Sepal","4":"Width","5":"3.0"},{"1":"setosa","2":"27","3":"Sepal","4":"Width","5":"3.4"},{"1":"setosa","2":"28","3":"Sepal","4":"Width","5":"3.5"},{"1":"setosa","2":"29","3":"Sepal","4":"Width","5":"3.4"},{"1":"setosa","2":"30","3":"Sepal","4":"Width","5":"3.2"},{"1":"setosa","2":"31","3":"Sepal","4":"Width","5":"3.1"},{"1":"setosa","2":"32","3":"Sepal","4":"Width","5":"3.4"},{"1":"setosa","2":"33","3":"Sepal","4":"Width","5":"4.1"},{"1":"setosa","2":"34","3":"Sepal","4":"Width","5":"4.2"},{"1":"setosa","2":"35","3":"Sepal","4":"Width","5":"3.1"},{"1":"setosa","2":"36","3":"Sepal","4":"Width","5":"3.2"},{"1":"setosa","2":"37","3":"Sepal","4":"Width","5":"3.5"},{"1":"setosa","2":"38","3":"Sepal","4":"Width","5":"3.6"},{"1":"setosa","2":"39","3":"Sepal","4":"Width","5":"3.0"},{"1":"setosa","2":"40","3":"Sepal","4":"Width","5":"3.4"},{"1":"setosa","2":"41","3":"Sepal","4":"Width","5":"3.5"},{"1":"setosa","2":"42","3":"Sepal","4":"Width","5":"2.3"},{"1":"setosa","2":"43","3":"Sepal","4":"Width","5":"3.2"},{"1":"setosa","2":"44","3":"Sepal","4":"Width","5":"3.5"},{"1":"setosa","2":"45","3":"Sepal","4":"Width","5":"3.8"},{"1":"setosa","2":"46","3":"Sepal","4":"Width","5":"3.0"},{"1":"setosa","2":"47","3":"Sepal","4":"Width","5":"3.8"},{"1":"setosa","2":"48","3":"Sepal","4":"Width","5":"3.2"},{"1":"setosa","2":"49","3":"Sepal","4":"Width","5":"3.7"},{"1":"setosa","2":"50","3":"Sepal","4":"Width","5":"3.3"},{"1":"versicolor","2":"51","3":"Sepal","4":"Width","5":"3.2"},{"1":"versicolor","2":"52","3":"Sepal","4":"Width","5":"3.2"},{"1":"versicolor","2":"53","3":"Sepal","4":"Width","5":"3.1"},{"1":"versicolor","2":"54","3":"Sepal","4":"Width","5":"2.3"},{"1":"versicolor","2":"55","3":"Sepal","4":"Width","5":"2.8"},{"1":"versicolor","2":"56","3":"Sepal","4":"Width","5":"2.8"},{"1":"versicolor","2":"57","3":"Sepal","4":"Width","5":"3.3"},{"1":"versicolor","2":"58","3":"Sepal","4":"Width","5":"2.4"},{"1":"versicolor","2":"59","3":"Sepal","4":"Width","5":"2.9"},{"1":"versicolor","2":"60","3":"Sepal","4":"Width","5":"2.7"},{"1":"versicolor","2":"61","3":"Sepal","4":"Width","5":"2.0"},{"1":"versicolor","2":"62","3":"Sepal","4":"Width","5":"3.0"},{"1":"versicolor","2":"63","3":"Sepal","4":"Width","5":"2.2"},{"1":"versicolor","2":"64","3":"Sepal","4":"Width","5":"2.9"},{"1":"versicolor","2":"65","3":"Sepal","4":"Width","5":"2.9"},{"1":"versicolor","2":"66","3":"Sepal","4":"Width","5":"3.1"},{"1":"versicolor","2":"67","3":"Sepal","4":"Width","5":"3.0"},{"1":"versicolor","2":"68","3":"Sepal","4":"Width","5":"2.7"},{"1":"versicolor","2":"69","3":"Sepal","4":"Width","5":"2.2"},{"1":"versicolor","2":"70","3":"Sepal","4":"Width","5":"2.5"},{"1":"versicolor","2":"71","3":"Sepal","4":"Width","5":"3.2"},{"1":"versicolor","2":"72","3":"Sepal","4":"Width","5":"2.8"},{"1":"versicolor","2":"73","3":"Sepal","4":"Width","5":"2.5"},{"1":"versicolor","2":"74","3":"Sepal","4":"Width","5":"2.8"},{"1":"versicolor","2":"75","3":"Sepal","4":"Width","5":"2.9"},{"1":"versicolor","2":"76","3":"Sepal","4":"Width","5":"3.0"},{"1":"versicolor","2":"77","3":"Sepal","4":"Width","5":"2.8"},{"1":"versicolor","2":"78","3":"Sepal","4":"Width","5":"3.0"},{"1":"versicolor","2":"79","3":"Sepal","4":"Width","5":"2.9"},{"1":"versicolor","2":"80","3":"Sepal","4":"Width","5":"2.6"},{"1":"versicolor","2":"81","3":"Sepal","4":"Width","5":"2.4"},{"1":"versicolor","2":"82","3":"Sepal","4":"Width","5":"2.4"},{"1":"versicolor","2":"83","3":"Sepal","4":"Width","5":"2.7"},{"1":"versicolor","2":"84","3":"Sepal","4":"Width","5":"2.7"},{"1":"versicolor","2":"85","3":"Sepal","4":"Width","5":"3.0"},{"1":"versicolor","2":"86","3":"Sepal","4":"Width","5":"3.4"},{"1":"versicolor","2":"87","3":"Sepal","4":"Width","5":"3.1"},{"1":"versicolor","2":"88","3":"Sepal","4":"Width","5":"2.3"},{"1":"versicolor","2":"89","3":"Sepal","4":"Width","5":"3.0"},{"1":"versicolor","2":"90","3":"Sepal","4":"Width","5":"2.5"},{"1":"versicolor","2":"91","3":"Sepal","4":"Width","5":"2.6"},{"1":"versicolor","2":"92","3":"Sepal","4":"Width","5":"3.0"},{"1":"versicolor","2":"93","3":"Sepal","4":"Width","5":"2.6"},{"1":"versicolor","2":"94","3":"Sepal","4":"Width","5":"2.3"},{"1":"versicolor","2":"95","3":"Sepal","4":"Width","5":"2.7"},{"1":"versicolor","2":"96","3":"Sepal","4":"Width","5":"3.0"},{"1":"versicolor","2":"97","3":"Sepal","4":"Width","5":"2.9"},{"1":"versicolor","2":"98","3":"Sepal","4":"Width","5":"2.9"},{"1":"versicolor","2":"99","3":"Sepal","4":"Width","5":"2.5"},{"1":"versicolor","2":"100","3":"Sepal","4":"Width","5":"2.8"},{"1":"virginica","2":"101","3":"Sepal","4":"Width","5":"3.3"},{"1":"virginica","2":"102","3":"Sepal","4":"Width","5":"2.7"},{"1":"virginica","2":"103","3":"Sepal","4":"Width","5":"3.0"},{"1":"virginica","2":"104","3":"Sepal","4":"Width","5":"2.9"},{"1":"virginica","2":"105","3":"Sepal","4":"Width","5":"3.0"},{"1":"virginica","2":"106","3":"Sepal","4":"Width","5":"3.0"},{"1":"virginica","2":"107","3":"Sepal","4":"Width","5":"2.5"},{"1":"virginica","2":"108","3":"Sepal","4":"Width","5":"2.9"},{"1":"virginica","2":"109","3":"Sepal","4":"Width","5":"2.5"},{"1":"virginica","2":"110","3":"Sepal","4":"Width","5":"3.6"},{"1":"virginica","2":"111","3":"Sepal","4":"Width","5":"3.2"},{"1":"virginica","2":"112","3":"Sepal","4":"Width","5":"2.7"},{"1":"virginica","2":"113","3":"Sepal","4":"Width","5":"3.0"},{"1":"virginica","2":"114","3":"Sepal","4":"Width","5":"2.5"},{"1":"virginica","2":"115","3":"Sepal","4":"Width","5":"2.8"},{"1":"virginica","2":"116","3":"Sepal","4":"Width","5":"3.2"},{"1":"virginica","2":"117","3":"Sepal","4":"Width","5":"3.0"},{"1":"virginica","2":"118","3":"Sepal","4":"Width","5":"3.8"},{"1":"virginica","2":"119","3":"Sepal","4":"Width","5":"2.6"},{"1":"virginica","2":"120","3":"Sepal","4":"Width","5":"2.2"},{"1":"virginica","2":"121","3":"Sepal","4":"Width","5":"3.2"},{"1":"virginica","2":"122","3":"Sepal","4":"Width","5":"2.8"},{"1":"virginica","2":"123","3":"Sepal","4":"Width","5":"2.8"},{"1":"virginica","2":"124","3":"Sepal","4":"Width","5":"2.7"},{"1":"virginica","2":"125","3":"Sepal","4":"Width","5":"3.3"},{"1":"virginica","2":"126","3":"Sepal","4":"Width","5":"3.2"},{"1":"virginica","2":"127","3":"Sepal","4":"Width","5":"2.8"},{"1":"virginica","2":"128","3":"Sepal","4":"Width","5":"3.0"},{"1":"virginica","2":"129","3":"Sepal","4":"Width","5":"2.8"},{"1":"virginica","2":"130","3":"Sepal","4":"Width","5":"3.0"},{"1":"virginica","2":"131","3":"Sepal","4":"Width","5":"2.8"},{"1":"virginica","2":"132","3":"Sepal","4":"Width","5":"3.8"},{"1":"virginica","2":"133","3":"Sepal","4":"Width","5":"2.8"},{"1":"virginica","2":"134","3":"Sepal","4":"Width","5":"2.8"},{"1":"virginica","2":"135","3":"Sepal","4":"Width","5":"2.6"},{"1":"virginica","2":"136","3":"Sepal","4":"Width","5":"3.0"},{"1":"virginica","2":"137","3":"Sepal","4":"Width","5":"3.4"},{"1":"virginica","2":"138","3":"Sepal","4":"Width","5":"3.1"},{"1":"virginica","2":"139","3":"Sepal","4":"Width","5":"3.0"},{"1":"virginica","2":"140","3":"Sepal","4":"Width","5":"3.1"},{"1":"virginica","2":"141","3":"Sepal","4":"Width","5":"3.1"},{"1":"virginica","2":"142","3":"Sepal","4":"Width","5":"3.1"},{"1":"virginica","2":"143","3":"Sepal","4":"Width","5":"2.7"},{"1":"virginica","2":"144","3":"Sepal","4":"Width","5":"3.2"},{"1":"virginica","2":"145","3":"Sepal","4":"Width","5":"3.3"},{"1":"virginica","2":"146","3":"Sepal","4":"Width","5":"3.0"},{"1":"virginica","2":"147","3":"Sepal","4":"Width","5":"2.5"},{"1":"virginica","2":"148","3":"Sepal","4":"Width","5":"3.0"},{"1":"virginica","2":"149","3":"Sepal","4":"Width","5":"3.4"},{"1":"virginica","2":"150","3":"Sepal","4":"Width","5":"3.0"},{"1":"setosa","2":"1","3":"Petal","4":"Length","5":"1.4"},{"1":"setosa","2":"2","3":"Petal","4":"Length","5":"1.4"},{"1":"setosa","2":"3","3":"Petal","4":"Length","5":"1.3"},{"1":"setosa","2":"4","3":"Petal","4":"Length","5":"1.5"},{"1":"setosa","2":"5","3":"Petal","4":"Length","5":"1.4"},{"1":"setosa","2":"6","3":"Petal","4":"Length","5":"1.7"},{"1":"setosa","2":"7","3":"Petal","4":"Length","5":"1.4"},{"1":"setosa","2":"8","3":"Petal","4":"Length","5":"1.5"},{"1":"setosa","2":"9","3":"Petal","4":"Length","5":"1.4"},{"1":"setosa","2":"10","3":"Petal","4":"Length","5":"1.5"},{"1":"setosa","2":"11","3":"Petal","4":"Length","5":"1.5"},{"1":"setosa","2":"12","3":"Petal","4":"Length","5":"1.6"},{"1":"setosa","2":"13","3":"Petal","4":"Length","5":"1.4"},{"1":"setosa","2":"14","3":"Petal","4":"Length","5":"1.1"},{"1":"setosa","2":"15","3":"Petal","4":"Length","5":"1.2"},{"1":"setosa","2":"16","3":"Petal","4":"Length","5":"1.5"},{"1":"setosa","2":"17","3":"Petal","4":"Length","5":"1.3"},{"1":"setosa","2":"18","3":"Petal","4":"Length","5":"1.4"},{"1":"setosa","2":"19","3":"Petal","4":"Length","5":"1.7"},{"1":"setosa","2":"20","3":"Petal","4":"Length","5":"1.5"},{"1":"setosa","2":"21","3":"Petal","4":"Length","5":"1.7"},{"1":"setosa","2":"22","3":"Petal","4":"Length","5":"1.5"},{"1":"setosa","2":"23","3":"Petal","4":"Length","5":"1.0"},{"1":"setosa","2":"24","3":"Petal","4":"Length","5":"1.7"},{"1":"setosa","2":"25","3":"Petal","4":"Length","5":"1.9"},{"1":"setosa","2":"26","3":"Petal","4":"Length","5":"1.6"},{"1":"setosa","2":"27","3":"Petal","4":"Length","5":"1.6"},{"1":"setosa","2":"28","3":"Petal","4":"Length","5":"1.5"},{"1":"setosa","2":"29","3":"Petal","4":"Length","5":"1.4"},{"1":"setosa","2":"30","3":"Petal","4":"Length","5":"1.6"},{"1":"setosa","2":"31","3":"Petal","4":"Length","5":"1.6"},{"1":"setosa","2":"32","3":"Petal","4":"Length","5":"1.5"},{"1":"setosa","2":"33","3":"Petal","4":"Length","5":"1.5"},{"1":"setosa","2":"34","3":"Petal","4":"Length","5":"1.4"},{"1":"setosa","2":"35","3":"Petal","4":"Length","5":"1.5"},{"1":"setosa","2":"36","3":"Petal","4":"Length","5":"1.2"},{"1":"setosa","2":"37","3":"Petal","4":"Length","5":"1.3"},{"1":"setosa","2":"38","3":"Petal","4":"Length","5":"1.4"},{"1":"setosa","2":"39","3":"Petal","4":"Length","5":"1.3"},{"1":"setosa","2":"40","3":"Petal","4":"Length","5":"1.5"},{"1":"setosa","2":"41","3":"Petal","4":"Length","5":"1.3"},{"1":"setosa","2":"42","3":"Petal","4":"Length","5":"1.3"},{"1":"setosa","2":"43","3":"Petal","4":"Length","5":"1.3"},{"1":"setosa","2":"44","3":"Petal","4":"Length","5":"1.6"},{"1":"setosa","2":"45","3":"Petal","4":"Length","5":"1.9"},{"1":"setosa","2":"46","3":"Petal","4":"Length","5":"1.4"},{"1":"setosa","2":"47","3":"Petal","4":"Length","5":"1.6"},{"1":"setosa","2":"48","3":"Petal","4":"Length","5":"1.4"},{"1":"setosa","2":"49","3":"Petal","4":"Length","5":"1.5"},{"1":"setosa","2":"50","3":"Petal","4":"Length","5":"1.4"},{"1":"versicolor","2":"51","3":"Petal","4":"Length","5":"4.7"},{"1":"versicolor","2":"52","3":"Petal","4":"Length","5":"4.5"},{"1":"versicolor","2":"53","3":"Petal","4":"Length","5":"4.9"},{"1":"versicolor","2":"54","3":"Petal","4":"Length","5":"4.0"},{"1":"versicolor","2":"55","3":"Petal","4":"Length","5":"4.6"},{"1":"versicolor","2":"56","3":"Petal","4":"Length","5":"4.5"},{"1":"versicolor","2":"57","3":"Petal","4":"Length","5":"4.7"},{"1":"versicolor","2":"58","3":"Petal","4":"Length","5":"3.3"},{"1":"versicolor","2":"59","3":"Petal","4":"Length","5":"4.6"},{"1":"versicolor","2":"60","3":"Petal","4":"Length","5":"3.9"},{"1":"versicolor","2":"61","3":"Petal","4":"Length","5":"3.5"},{"1":"versicolor","2":"62","3":"Petal","4":"Length","5":"4.2"},{"1":"versicolor","2":"63","3":"Petal","4":"Length","5":"4.0"},{"1":"versicolor","2":"64","3":"Petal","4":"Length","5":"4.7"},{"1":"versicolor","2":"65","3":"Petal","4":"Length","5":"3.6"},{"1":"versicolor","2":"66","3":"Petal","4":"Length","5":"4.4"},{"1":"versicolor","2":"67","3":"Petal","4":"Length","5":"4.5"},{"1":"versicolor","2":"68","3":"Petal","4":"Length","5":"4.1"},{"1":"versicolor","2":"69","3":"Petal","4":"Length","5":"4.5"},{"1":"versicolor","2":"70","3":"Petal","4":"Length","5":"3.9"},{"1":"versicolor","2":"71","3":"Petal","4":"Length","5":"4.8"},{"1":"versicolor","2":"72","3":"Petal","4":"Length","5":"4.0"},{"1":"versicolor","2":"73","3":"Petal","4":"Length","5":"4.9"},{"1":"versicolor","2":"74","3":"Petal","4":"Length","5":"4.7"},{"1":"versicolor","2":"75","3":"Petal","4":"Length","5":"4.3"},{"1":"versicolor","2":"76","3":"Petal","4":"Length","5":"4.4"},{"1":"versicolor","2":"77","3":"Petal","4":"Length","5":"4.8"},{"1":"versicolor","2":"78","3":"Petal","4":"Length","5":"5.0"},{"1":"versicolor","2":"79","3":"Petal","4":"Length","5":"4.5"},{"1":"versicolor","2":"80","3":"Petal","4":"Length","5":"3.5"},{"1":"versicolor","2":"81","3":"Petal","4":"Length","5":"3.8"},{"1":"versicolor","2":"82","3":"Petal","4":"Length","5":"3.7"},{"1":"versicolor","2":"83","3":"Petal","4":"Length","5":"3.9"},{"1":"versicolor","2":"84","3":"Petal","4":"Length","5":"5.1"},{"1":"versicolor","2":"85","3":"Petal","4":"Length","5":"4.5"},{"1":"versicolor","2":"86","3":"Petal","4":"Length","5":"4.5"},{"1":"versicolor","2":"87","3":"Petal","4":"Length","5":"4.7"},{"1":"versicolor","2":"88","3":"Petal","4":"Length","5":"4.4"},{"1":"versicolor","2":"89","3":"Petal","4":"Length","5":"4.1"},{"1":"versicolor","2":"90","3":"Petal","4":"Length","5":"4.0"},{"1":"versicolor","2":"91","3":"Petal","4":"Length","5":"4.4"},{"1":"versicolor","2":"92","3":"Petal","4":"Length","5":"4.6"},{"1":"versicolor","2":"93","3":"Petal","4":"Length","5":"4.0"},{"1":"versicolor","2":"94","3":"Petal","4":"Length","5":"3.3"},{"1":"versicolor","2":"95","3":"Petal","4":"Length","5":"4.2"},{"1":"versicolor","2":"96","3":"Petal","4":"Length","5":"4.2"},{"1":"versicolor","2":"97","3":"Petal","4":"Length","5":"4.2"},{"1":"versicolor","2":"98","3":"Petal","4":"Length","5":"4.3"},{"1":"versicolor","2":"99","3":"Petal","4":"Length","5":"3.0"},{"1":"versicolor","2":"100","3":"Petal","4":"Length","5":"4.1"},{"1":"virginica","2":"101","3":"Petal","4":"Length","5":"6.0"},{"1":"virginica","2":"102","3":"Petal","4":"Length","5":"5.1"},{"1":"virginica","2":"103","3":"Petal","4":"Length","5":"5.9"},{"1":"virginica","2":"104","3":"Petal","4":"Length","5":"5.6"},{"1":"virginica","2":"105","3":"Petal","4":"Length","5":"5.8"},{"1":"virginica","2":"106","3":"Petal","4":"Length","5":"6.6"},{"1":"virginica","2":"107","3":"Petal","4":"Length","5":"4.5"},{"1":"virginica","2":"108","3":"Petal","4":"Length","5":"6.3"},{"1":"virginica","2":"109","3":"Petal","4":"Length","5":"5.8"},{"1":"virginica","2":"110","3":"Petal","4":"Length","5":"6.1"},{"1":"virginica","2":"111","3":"Petal","4":"Length","5":"5.1"},{"1":"virginica","2":"112","3":"Petal","4":"Length","5":"5.3"},{"1":"virginica","2":"113","3":"Petal","4":"Length","5":"5.5"},{"1":"virginica","2":"114","3":"Petal","4":"Length","5":"5.0"},{"1":"virginica","2":"115","3":"Petal","4":"Length","5":"5.1"},{"1":"virginica","2":"116","3":"Petal","4":"Length","5":"5.3"},{"1":"virginica","2":"117","3":"Petal","4":"Length","5":"5.5"},{"1":"virginica","2":"118","3":"Petal","4":"Length","5":"6.7"},{"1":"virginica","2":"119","3":"Petal","4":"Length","5":"6.9"},{"1":"virginica","2":"120","3":"Petal","4":"Length","5":"5.0"},{"1":"virginica","2":"121","3":"Petal","4":"Length","5":"5.7"},{"1":"virginica","2":"122","3":"Petal","4":"Length","5":"4.9"},{"1":"virginica","2":"123","3":"Petal","4":"Length","5":"6.7"},{"1":"virginica","2":"124","3":"Petal","4":"Length","5":"4.9"},{"1":"virginica","2":"125","3":"Petal","4":"Length","5":"5.7"},{"1":"virginica","2":"126","3":"Petal","4":"Length","5":"6.0"},{"1":"virginica","2":"127","3":"Petal","4":"Length","5":"4.8"},{"1":"virginica","2":"128","3":"Petal","4":"Length","5":"4.9"},{"1":"virginica","2":"129","3":"Petal","4":"Length","5":"5.6"},{"1":"virginica","2":"130","3":"Petal","4":"Length","5":"5.8"},{"1":"virginica","2":"131","3":"Petal","4":"Length","5":"6.1"},{"1":"virginica","2":"132","3":"Petal","4":"Length","5":"6.4"},{"1":"virginica","2":"133","3":"Petal","4":"Length","5":"5.6"},{"1":"virginica","2":"134","3":"Petal","4":"Length","5":"5.1"},{"1":"virginica","2":"135","3":"Petal","4":"Length","5":"5.6"},{"1":"virginica","2":"136","3":"Petal","4":"Length","5":"6.1"},{"1":"virginica","2":"137","3":"Petal","4":"Length","5":"5.6"},{"1":"virginica","2":"138","3":"Petal","4":"Length","5":"5.5"},{"1":"virginica","2":"139","3":"Petal","4":"Length","5":"4.8"},{"1":"virginica","2":"140","3":"Petal","4":"Length","5":"5.4"},{"1":"virginica","2":"141","3":"Petal","4":"Length","5":"5.6"},{"1":"virginica","2":"142","3":"Petal","4":"Length","5":"5.1"},{"1":"virginica","2":"143","3":"Petal","4":"Length","5":"5.1"},{"1":"virginica","2":"144","3":"Petal","4":"Length","5":"5.9"},{"1":"virginica","2":"145","3":"Petal","4":"Length","5":"5.7"},{"1":"virginica","2":"146","3":"Petal","4":"Length","5":"5.2"},{"1":"virginica","2":"147","3":"Petal","4":"Length","5":"5.0"},{"1":"virginica","2":"148","3":"Petal","4":"Length","5":"5.2"},{"1":"virginica","2":"149","3":"Petal","4":"Length","5":"5.4"},{"1":"virginica","2":"150","3":"Petal","4":"Length","5":"5.1"},{"1":"setosa","2":"1","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"2","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"3","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"4","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"5","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"6","3":"Petal","4":"Width","5":"0.4"},{"1":"setosa","2":"7","3":"Petal","4":"Width","5":"0.3"},{"1":"setosa","2":"8","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"9","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"10","3":"Petal","4":"Width","5":"0.1"},{"1":"setosa","2":"11","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"12","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"13","3":"Petal","4":"Width","5":"0.1"},{"1":"setosa","2":"14","3":"Petal","4":"Width","5":"0.1"},{"1":"setosa","2":"15","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"16","3":"Petal","4":"Width","5":"0.4"},{"1":"setosa","2":"17","3":"Petal","4":"Width","5":"0.4"},{"1":"setosa","2":"18","3":"Petal","4":"Width","5":"0.3"},{"1":"setosa","2":"19","3":"Petal","4":"Width","5":"0.3"},{"1":"setosa","2":"20","3":"Petal","4":"Width","5":"0.3"},{"1":"setosa","2":"21","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"22","3":"Petal","4":"Width","5":"0.4"},{"1":"setosa","2":"23","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"24","3":"Petal","4":"Width","5":"0.5"},{"1":"setosa","2":"25","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"26","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"27","3":"Petal","4":"Width","5":"0.4"},{"1":"setosa","2":"28","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"29","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"30","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"31","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"32","3":"Petal","4":"Width","5":"0.4"},{"1":"setosa","2":"33","3":"Petal","4":"Width","5":"0.1"},{"1":"setosa","2":"34","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"35","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"36","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"37","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"38","3":"Petal","4":"Width","5":"0.1"},{"1":"setosa","2":"39","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"40","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"41","3":"Petal","4":"Width","5":"0.3"},{"1":"setosa","2":"42","3":"Petal","4":"Width","5":"0.3"},{"1":"setosa","2":"43","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"44","3":"Petal","4":"Width","5":"0.6"},{"1":"setosa","2":"45","3":"Petal","4":"Width","5":"0.4"},{"1":"setosa","2":"46","3":"Petal","4":"Width","5":"0.3"},{"1":"setosa","2":"47","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"48","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"49","3":"Petal","4":"Width","5":"0.2"},{"1":"setosa","2":"50","3":"Petal","4":"Width","5":"0.2"},{"1":"versicolor","2":"51","3":"Petal","4":"Width","5":"1.4"},{"1":"versicolor","2":"52","3":"Petal","4":"Width","5":"1.5"},{"1":"versicolor","2":"53","3":"Petal","4":"Width","5":"1.5"},{"1":"versicolor","2":"54","3":"Petal","4":"Width","5":"1.3"},{"1":"versicolor","2":"55","3":"Petal","4":"Width","5":"1.5"},{"1":"versicolor","2":"56","3":"Petal","4":"Width","5":"1.3"},{"1":"versicolor","2":"57","3":"Petal","4":"Width","5":"1.6"},{"1":"versicolor","2":"58","3":"Petal","4":"Width","5":"1.0"},{"1":"versicolor","2":"59","3":"Petal","4":"Width","5":"1.3"},{"1":"versicolor","2":"60","3":"Petal","4":"Width","5":"1.4"},{"1":"versicolor","2":"61","3":"Petal","4":"Width","5":"1.0"},{"1":"versicolor","2":"62","3":"Petal","4":"Width","5":"1.5"},{"1":"versicolor","2":"63","3":"Petal","4":"Width","5":"1.0"},{"1":"versicolor","2":"64","3":"Petal","4":"Width","5":"1.4"},{"1":"versicolor","2":"65","3":"Petal","4":"Width","5":"1.3"},{"1":"versicolor","2":"66","3":"Petal","4":"Width","5":"1.4"},{"1":"versicolor","2":"67","3":"Petal","4":"Width","5":"1.5"},{"1":"versicolor","2":"68","3":"Petal","4":"Width","5":"1.0"},{"1":"versicolor","2":"69","3":"Petal","4":"Width","5":"1.5"},{"1":"versicolor","2":"70","3":"Petal","4":"Width","5":"1.1"},{"1":"versicolor","2":"71","3":"Petal","4":"Width","5":"1.8"},{"1":"versicolor","2":"72","3":"Petal","4":"Width","5":"1.3"},{"1":"versicolor","2":"73","3":"Petal","4":"Width","5":"1.5"},{"1":"versicolor","2":"74","3":"Petal","4":"Width","5":"1.2"},{"1":"versicolor","2":"75","3":"Petal","4":"Width","5":"1.3"},{"1":"versicolor","2":"76","3":"Petal","4":"Width","5":"1.4"},{"1":"versicolor","2":"77","3":"Petal","4":"Width","5":"1.4"},{"1":"versicolor","2":"78","3":"Petal","4":"Width","5":"1.7"},{"1":"versicolor","2":"79","3":"Petal","4":"Width","5":"1.5"},{"1":"versicolor","2":"80","3":"Petal","4":"Width","5":"1.0"},{"1":"versicolor","2":"81","3":"Petal","4":"Width","5":"1.1"},{"1":"versicolor","2":"82","3":"Petal","4":"Width","5":"1.0"},{"1":"versicolor","2":"83","3":"Petal","4":"Width","5":"1.2"},{"1":"versicolor","2":"84","3":"Petal","4":"Width","5":"1.6"},{"1":"versicolor","2":"85","3":"Petal","4":"Width","5":"1.5"},{"1":"versicolor","2":"86","3":"Petal","4":"Width","5":"1.6"},{"1":"versicolor","2":"87","3":"Petal","4":"Width","5":"1.5"},{"1":"versicolor","2":"88","3":"Petal","4":"Width","5":"1.3"},{"1":"versicolor","2":"89","3":"Petal","4":"Width","5":"1.3"},{"1":"versicolor","2":"90","3":"Petal","4":"Width","5":"1.3"},{"1":"versicolor","2":"91","3":"Petal","4":"Width","5":"1.2"},{"1":"versicolor","2":"92","3":"Petal","4":"Width","5":"1.4"},{"1":"versicolor","2":"93","3":"Petal","4":"Width","5":"1.2"},{"1":"versicolor","2":"94","3":"Petal","4":"Width","5":"1.0"},{"1":"versicolor","2":"95","3":"Petal","4":"Width","5":"1.3"},{"1":"versicolor","2":"96","3":"Petal","4":"Width","5":"1.2"},{"1":"versicolor","2":"97","3":"Petal","4":"Width","5":"1.3"},{"1":"versicolor","2":"98","3":"Petal","4":"Width","5":"1.3"},{"1":"versicolor","2":"99","3":"Petal","4":"Width","5":"1.1"},{"1":"versicolor","2":"100","3":"Petal","4":"Width","5":"1.3"},{"1":"virginica","2":"101","3":"Petal","4":"Width","5":"2.5"},{"1":"virginica","2":"102","3":"Petal","4":"Width","5":"1.9"},{"1":"virginica","2":"103","3":"Petal","4":"Width","5":"2.1"},{"1":"virginica","2":"104","3":"Petal","4":"Width","5":"1.8"},{"1":"virginica","2":"105","3":"Petal","4":"Width","5":"2.2"},{"1":"virginica","2":"106","3":"Petal","4":"Width","5":"2.1"},{"1":"virginica","2":"107","3":"Petal","4":"Width","5":"1.7"},{"1":"virginica","2":"108","3":"Petal","4":"Width","5":"1.8"},{"1":"virginica","2":"109","3":"Petal","4":"Width","5":"1.8"},{"1":"virginica","2":"110","3":"Petal","4":"Width","5":"2.5"},{"1":"virginica","2":"111","3":"Petal","4":"Width","5":"2.0"},{"1":"virginica","2":"112","3":"Petal","4":"Width","5":"1.9"},{"1":"virginica","2":"113","3":"Petal","4":"Width","5":"2.1"},{"1":"virginica","2":"114","3":"Petal","4":"Width","5":"2.0"},{"1":"virginica","2":"115","3":"Petal","4":"Width","5":"2.4"},{"1":"virginica","2":"116","3":"Petal","4":"Width","5":"2.3"},{"1":"virginica","2":"117","3":"Petal","4":"Width","5":"1.8"},{"1":"virginica","2":"118","3":"Petal","4":"Width","5":"2.2"},{"1":"virginica","2":"119","3":"Petal","4":"Width","5":"2.3"},{"1":"virginica","2":"120","3":"Petal","4":"Width","5":"1.5"},{"1":"virginica","2":"121","3":"Petal","4":"Width","5":"2.3"},{"1":"virginica","2":"122","3":"Petal","4":"Width","5":"2.0"},{"1":"virginica","2":"123","3":"Petal","4":"Width","5":"2.0"},{"1":"virginica","2":"124","3":"Petal","4":"Width","5":"1.8"},{"1":"virginica","2":"125","3":"Petal","4":"Width","5":"2.1"},{"1":"virginica","2":"126","3":"Petal","4":"Width","5":"1.8"},{"1":"virginica","2":"127","3":"Petal","4":"Width","5":"1.8"},{"1":"virginica","2":"128","3":"Petal","4":"Width","5":"1.8"},{"1":"virginica","2":"129","3":"Petal","4":"Width","5":"2.1"},{"1":"virginica","2":"130","3":"Petal","4":"Width","5":"1.6"},{"1":"virginica","2":"131","3":"Petal","4":"Width","5":"1.9"},{"1":"virginica","2":"132","3":"Petal","4":"Width","5":"2.0"},{"1":"virginica","2":"133","3":"Petal","4":"Width","5":"2.2"},{"1":"virginica","2":"134","3":"Petal","4":"Width","5":"1.5"},{"1":"virginica","2":"135","3":"Petal","4":"Width","5":"1.4"},{"1":"virginica","2":"136","3":"Petal","4":"Width","5":"2.3"},{"1":"virginica","2":"137","3":"Petal","4":"Width","5":"2.4"},{"1":"virginica","2":"138","3":"Petal","4":"Width","5":"1.8"},{"1":"virginica","2":"139","3":"Petal","4":"Width","5":"1.8"},{"1":"virginica","2":"140","3":"Petal","4":"Width","5":"2.1"},{"1":"virginica","2":"141","3":"Petal","4":"Width","5":"2.4"},{"1":"virginica","2":"142","3":"Petal","4":"Width","5":"2.3"},{"1":"virginica","2":"143","3":"Petal","4":"Width","5":"1.9"},{"1":"virginica","2":"144","3":"Petal","4":"Width","5":"2.3"},{"1":"virginica","2":"145","3":"Petal","4":"Width","5":"2.5"},{"1":"virginica","2":"146","3":"Petal","4":"Width","5":"2.3"},{"1":"virginica","2":"147","3":"Petal","4":"Width","5":"1.9"},{"1":"virginica","2":"148","3":"Petal","4":"Width","5":"2.0"},{"1":"virginica","2":"149","3":"Petal","4":"Width","5":"2.3"},{"1":"virginica","2":"150","3":"Petal","4":"Width","5":"1.8"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[6],"max":[6]},"pages":{}}}
+  </script>
+</div>
+</div>
+<p>After you have another possible “key” column, your spreading part start to become very useful.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+iris %&gt;%
+  mutate(id = row_number()) %&gt;%
+  gather(var, value, -(Species:id)) %&gt;%
+  separate(var, into = c(&quot;loc&quot;, &quot;var&quot;)) %&gt;%
+  spread(loc, value) %&gt;%
+  paged_table(options = list(rows.print = 6))</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Species"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["id"],"name":[2],"type":["int"],"align":["right"]},{"label":["var"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Petal"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Sepal"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"setosa","2":"1","3":"Length","4":"1.4","5":"5.1"},{"1":"setosa","2":"1","3":"Width","4":"0.2","5":"3.5"},{"1":"setosa","2":"2","3":"Length","4":"1.4","5":"4.9"},{"1":"setosa","2":"2","3":"Width","4":"0.2","5":"3.0"},{"1":"setosa","2":"3","3":"Length","4":"1.3","5":"4.7"},{"1":"setosa","2":"3","3":"Width","4":"0.2","5":"3.2"},{"1":"setosa","2":"4","3":"Length","4":"1.5","5":"4.6"},{"1":"setosa","2":"4","3":"Width","4":"0.2","5":"3.1"},{"1":"setosa","2":"5","3":"Length","4":"1.4","5":"5.0"},{"1":"setosa","2":"5","3":"Width","4":"0.2","5":"3.6"},{"1":"setosa","2":"6","3":"Length","4":"1.7","5":"5.4"},{"1":"setosa","2":"6","3":"Width","4":"0.4","5":"3.9"},{"1":"setosa","2":"7","3":"Length","4":"1.4","5":"4.6"},{"1":"setosa","2":"7","3":"Width","4":"0.3","5":"3.4"},{"1":"setosa","2":"8","3":"Length","4":"1.5","5":"5.0"},{"1":"setosa","2":"8","3":"Width","4":"0.2","5":"3.4"},{"1":"setosa","2":"9","3":"Length","4":"1.4","5":"4.4"},{"1":"setosa","2":"9","3":"Width","4":"0.2","5":"2.9"},{"1":"setosa","2":"10","3":"Length","4":"1.5","5":"4.9"},{"1":"setosa","2":"10","3":"Width","4":"0.1","5":"3.1"},{"1":"setosa","2":"11","3":"Length","4":"1.5","5":"5.4"},{"1":"setosa","2":"11","3":"Width","4":"0.2","5":"3.7"},{"1":"setosa","2":"12","3":"Length","4":"1.6","5":"4.8"},{"1":"setosa","2":"12","3":"Width","4":"0.2","5":"3.4"},{"1":"setosa","2":"13","3":"Length","4":"1.4","5":"4.8"},{"1":"setosa","2":"13","3":"Width","4":"0.1","5":"3.0"},{"1":"setosa","2":"14","3":"Length","4":"1.1","5":"4.3"},{"1":"setosa","2":"14","3":"Width","4":"0.1","5":"3.0"},{"1":"setosa","2":"15","3":"Length","4":"1.2","5":"5.8"},{"1":"setosa","2":"15","3":"Width","4":"0.2","5":"4.0"},{"1":"setosa","2":"16","3":"Length","4":"1.5","5":"5.7"},{"1":"setosa","2":"16","3":"Width","4":"0.4","5":"4.4"},{"1":"setosa","2":"17","3":"Length","4":"1.3","5":"5.4"},{"1":"setosa","2":"17","3":"Width","4":"0.4","5":"3.9"},{"1":"setosa","2":"18","3":"Length","4":"1.4","5":"5.1"},{"1":"setosa","2":"18","3":"Width","4":"0.3","5":"3.5"},{"1":"setosa","2":"19","3":"Length","4":"1.7","5":"5.7"},{"1":"setosa","2":"19","3":"Width","4":"0.3","5":"3.8"},{"1":"setosa","2":"20","3":"Length","4":"1.5","5":"5.1"},{"1":"setosa","2":"20","3":"Width","4":"0.3","5":"3.8"},{"1":"setosa","2":"21","3":"Length","4":"1.7","5":"5.4"},{"1":"setosa","2":"21","3":"Width","4":"0.2","5":"3.4"},{"1":"setosa","2":"22","3":"Length","4":"1.5","5":"5.1"},{"1":"setosa","2":"22","3":"Width","4":"0.4","5":"3.7"},{"1":"setosa","2":"23","3":"Length","4":"1.0","5":"4.6"},{"1":"setosa","2":"23","3":"Width","4":"0.2","5":"3.6"},{"1":"setosa","2":"24","3":"Length","4":"1.7","5":"5.1"},{"1":"setosa","2":"24","3":"Width","4":"0.5","5":"3.3"},{"1":"setosa","2":"25","3":"Length","4":"1.9","5":"4.8"},{"1":"setosa","2":"25","3":"Width","4":"0.2","5":"3.4"},{"1":"setosa","2":"26","3":"Length","4":"1.6","5":"5.0"},{"1":"setosa","2":"26","3":"Width","4":"0.2","5":"3.0"},{"1":"setosa","2":"27","3":"Length","4":"1.6","5":"5.0"},{"1":"setosa","2":"27","3":"Width","4":"0.4","5":"3.4"},{"1":"setosa","2":"28","3":"Length","4":"1.5","5":"5.2"},{"1":"setosa","2":"28","3":"Width","4":"0.2","5":"3.5"},{"1":"setosa","2":"29","3":"Length","4":"1.4","5":"5.2"},{"1":"setosa","2":"29","3":"Width","4":"0.2","5":"3.4"},{"1":"setosa","2":"30","3":"Length","4":"1.6","5":"4.7"},{"1":"setosa","2":"30","3":"Width","4":"0.2","5":"3.2"},{"1":"setosa","2":"31","3":"Length","4":"1.6","5":"4.8"},{"1":"setosa","2":"31","3":"Width","4":"0.2","5":"3.1"},{"1":"setosa","2":"32","3":"Length","4":"1.5","5":"5.4"},{"1":"setosa","2":"32","3":"Width","4":"0.4","5":"3.4"},{"1":"setosa","2":"33","3":"Length","4":"1.5","5":"5.2"},{"1":"setosa","2":"33","3":"Width","4":"0.1","5":"4.1"},{"1":"setosa","2":"34","3":"Length","4":"1.4","5":"5.5"},{"1":"setosa","2":"34","3":"Width","4":"0.2","5":"4.2"},{"1":"setosa","2":"35","3":"Length","4":"1.5","5":"4.9"},{"1":"setosa","2":"35","3":"Width","4":"0.2","5":"3.1"},{"1":"setosa","2":"36","3":"Length","4":"1.2","5":"5.0"},{"1":"setosa","2":"36","3":"Width","4":"0.2","5":"3.2"},{"1":"setosa","2":"37","3":"Length","4":"1.3","5":"5.5"},{"1":"setosa","2":"37","3":"Width","4":"0.2","5":"3.5"},{"1":"setosa","2":"38","3":"Length","4":"1.4","5":"4.9"},{"1":"setosa","2":"38","3":"Width","4":"0.1","5":"3.6"},{"1":"setosa","2":"39","3":"Length","4":"1.3","5":"4.4"},{"1":"setosa","2":"39","3":"Width","4":"0.2","5":"3.0"},{"1":"setosa","2":"40","3":"Length","4":"1.5","5":"5.1"},{"1":"setosa","2":"40","3":"Width","4":"0.2","5":"3.4"},{"1":"setosa","2":"41","3":"Length","4":"1.3","5":"5.0"},{"1":"setosa","2":"41","3":"Width","4":"0.3","5":"3.5"},{"1":"setosa","2":"42","3":"Length","4":"1.3","5":"4.5"},{"1":"setosa","2":"42","3":"Width","4":"0.3","5":"2.3"},{"1":"setosa","2":"43","3":"Length","4":"1.3","5":"4.4"},{"1":"setosa","2":"43","3":"Width","4":"0.2","5":"3.2"},{"1":"setosa","2":"44","3":"Length","4":"1.6","5":"5.0"},{"1":"setosa","2":"44","3":"Width","4":"0.6","5":"3.5"},{"1":"setosa","2":"45","3":"Length","4":"1.9","5":"5.1"},{"1":"setosa","2":"45","3":"Width","4":"0.4","5":"3.8"},{"1":"setosa","2":"46","3":"Length","4":"1.4","5":"4.8"},{"1":"setosa","2":"46","3":"Width","4":"0.3","5":"3.0"},{"1":"setosa","2":"47","3":"Length","4":"1.6","5":"5.1"},{"1":"setosa","2":"47","3":"Width","4":"0.2","5":"3.8"},{"1":"setosa","2":"48","3":"Length","4":"1.4","5":"4.6"},{"1":"setosa","2":"48","3":"Width","4":"0.2","5":"3.2"},{"1":"setosa","2":"49","3":"Length","4":"1.5","5":"5.3"},{"1":"setosa","2":"49","3":"Width","4":"0.2","5":"3.7"},{"1":"setosa","2":"50","3":"Length","4":"1.4","5":"5.0"},{"1":"setosa","2":"50","3":"Width","4":"0.2","5":"3.3"},{"1":"versicolor","2":"51","3":"Length","4":"4.7","5":"7.0"},{"1":"versicolor","2":"51","3":"Width","4":"1.4","5":"3.2"},{"1":"versicolor","2":"52","3":"Length","4":"4.5","5":"6.4"},{"1":"versicolor","2":"52","3":"Width","4":"1.5","5":"3.2"},{"1":"versicolor","2":"53","3":"Length","4":"4.9","5":"6.9"},{"1":"versicolor","2":"53","3":"Width","4":"1.5","5":"3.1"},{"1":"versicolor","2":"54","3":"Length","4":"4.0","5":"5.5"},{"1":"versicolor","2":"54","3":"Width","4":"1.3","5":"2.3"},{"1":"versicolor","2":"55","3":"Length","4":"4.6","5":"6.5"},{"1":"versicolor","2":"55","3":"Width","4":"1.5","5":"2.8"},{"1":"versicolor","2":"56","3":"Length","4":"4.5","5":"5.7"},{"1":"versicolor","2":"56","3":"Width","4":"1.3","5":"2.8"},{"1":"versicolor","2":"57","3":"Length","4":"4.7","5":"6.3"},{"1":"versicolor","2":"57","3":"Width","4":"1.6","5":"3.3"},{"1":"versicolor","2":"58","3":"Length","4":"3.3","5":"4.9"},{"1":"versicolor","2":"58","3":"Width","4":"1.0","5":"2.4"},{"1":"versicolor","2":"59","3":"Length","4":"4.6","5":"6.6"},{"1":"versicolor","2":"59","3":"Width","4":"1.3","5":"2.9"},{"1":"versicolor","2":"60","3":"Length","4":"3.9","5":"5.2"},{"1":"versicolor","2":"60","3":"Width","4":"1.4","5":"2.7"},{"1":"versicolor","2":"61","3":"Length","4":"3.5","5":"5.0"},{"1":"versicolor","2":"61","3":"Width","4":"1.0","5":"2.0"},{"1":"versicolor","2":"62","3":"Length","4":"4.2","5":"5.9"},{"1":"versicolor","2":"62","3":"Width","4":"1.5","5":"3.0"},{"1":"versicolor","2":"63","3":"Length","4":"4.0","5":"6.0"},{"1":"versicolor","2":"63","3":"Width","4":"1.0","5":"2.2"},{"1":"versicolor","2":"64","3":"Length","4":"4.7","5":"6.1"},{"1":"versicolor","2":"64","3":"Width","4":"1.4","5":"2.9"},{"1":"versicolor","2":"65","3":"Length","4":"3.6","5":"5.6"},{"1":"versicolor","2":"65","3":"Width","4":"1.3","5":"2.9"},{"1":"versicolor","2":"66","3":"Length","4":"4.4","5":"6.7"},{"1":"versicolor","2":"66","3":"Width","4":"1.4","5":"3.1"},{"1":"versicolor","2":"67","3":"Length","4":"4.5","5":"5.6"},{"1":"versicolor","2":"67","3":"Width","4":"1.5","5":"3.0"},{"1":"versicolor","2":"68","3":"Length","4":"4.1","5":"5.8"},{"1":"versicolor","2":"68","3":"Width","4":"1.0","5":"2.7"},{"1":"versicolor","2":"69","3":"Length","4":"4.5","5":"6.2"},{"1":"versicolor","2":"69","3":"Width","4":"1.5","5":"2.2"},{"1":"versicolor","2":"70","3":"Length","4":"3.9","5":"5.6"},{"1":"versicolor","2":"70","3":"Width","4":"1.1","5":"2.5"},{"1":"versicolor","2":"71","3":"Length","4":"4.8","5":"5.9"},{"1":"versicolor","2":"71","3":"Width","4":"1.8","5":"3.2"},{"1":"versicolor","2":"72","3":"Length","4":"4.0","5":"6.1"},{"1":"versicolor","2":"72","3":"Width","4":"1.3","5":"2.8"},{"1":"versicolor","2":"73","3":"Length","4":"4.9","5":"6.3"},{"1":"versicolor","2":"73","3":"Width","4":"1.5","5":"2.5"},{"1":"versicolor","2":"74","3":"Length","4":"4.7","5":"6.1"},{"1":"versicolor","2":"74","3":"Width","4":"1.2","5":"2.8"},{"1":"versicolor","2":"75","3":"Length","4":"4.3","5":"6.4"},{"1":"versicolor","2":"75","3":"Width","4":"1.3","5":"2.9"},{"1":"versicolor","2":"76","3":"Length","4":"4.4","5":"6.6"},{"1":"versicolor","2":"76","3":"Width","4":"1.4","5":"3.0"},{"1":"versicolor","2":"77","3":"Length","4":"4.8","5":"6.8"},{"1":"versicolor","2":"77","3":"Width","4":"1.4","5":"2.8"},{"1":"versicolor","2":"78","3":"Length","4":"5.0","5":"6.7"},{"1":"versicolor","2":"78","3":"Width","4":"1.7","5":"3.0"},{"1":"versicolor","2":"79","3":"Length","4":"4.5","5":"6.0"},{"1":"versicolor","2":"79","3":"Width","4":"1.5","5":"2.9"},{"1":"versicolor","2":"80","3":"Length","4":"3.5","5":"5.7"},{"1":"versicolor","2":"80","3":"Width","4":"1.0","5":"2.6"},{"1":"versicolor","2":"81","3":"Length","4":"3.8","5":"5.5"},{"1":"versicolor","2":"81","3":"Width","4":"1.1","5":"2.4"},{"1":"versicolor","2":"82","3":"Length","4":"3.7","5":"5.5"},{"1":"versicolor","2":"82","3":"Width","4":"1.0","5":"2.4"},{"1":"versicolor","2":"83","3":"Length","4":"3.9","5":"5.8"},{"1":"versicolor","2":"83","3":"Width","4":"1.2","5":"2.7"},{"1":"versicolor","2":"84","3":"Length","4":"5.1","5":"6.0"},{"1":"versicolor","2":"84","3":"Width","4":"1.6","5":"2.7"},{"1":"versicolor","2":"85","3":"Length","4":"4.5","5":"5.4"},{"1":"versicolor","2":"85","3":"Width","4":"1.5","5":"3.0"},{"1":"versicolor","2":"86","3":"Length","4":"4.5","5":"6.0"},{"1":"versicolor","2":"86","3":"Width","4":"1.6","5":"3.4"},{"1":"versicolor","2":"87","3":"Length","4":"4.7","5":"6.7"},{"1":"versicolor","2":"87","3":"Width","4":"1.5","5":"3.1"},{"1":"versicolor","2":"88","3":"Length","4":"4.4","5":"6.3"},{"1":"versicolor","2":"88","3":"Width","4":"1.3","5":"2.3"},{"1":"versicolor","2":"89","3":"Length","4":"4.1","5":"5.6"},{"1":"versicolor","2":"89","3":"Width","4":"1.3","5":"3.0"},{"1":"versicolor","2":"90","3":"Length","4":"4.0","5":"5.5"},{"1":"versicolor","2":"90","3":"Width","4":"1.3","5":"2.5"},{"1":"versicolor","2":"91","3":"Length","4":"4.4","5":"5.5"},{"1":"versicolor","2":"91","3":"Width","4":"1.2","5":"2.6"},{"1":"versicolor","2":"92","3":"Length","4":"4.6","5":"6.1"},{"1":"versicolor","2":"92","3":"Width","4":"1.4","5":"3.0"},{"1":"versicolor","2":"93","3":"Length","4":"4.0","5":"5.8"},{"1":"versicolor","2":"93","3":"Width","4":"1.2","5":"2.6"},{"1":"versicolor","2":"94","3":"Length","4":"3.3","5":"5.0"},{"1":"versicolor","2":"94","3":"Width","4":"1.0","5":"2.3"},{"1":"versicolor","2":"95","3":"Length","4":"4.2","5":"5.6"},{"1":"versicolor","2":"95","3":"Width","4":"1.3","5":"2.7"},{"1":"versicolor","2":"96","3":"Length","4":"4.2","5":"5.7"},{"1":"versicolor","2":"96","3":"Width","4":"1.2","5":"3.0"},{"1":"versicolor","2":"97","3":"Length","4":"4.2","5":"5.7"},{"1":"versicolor","2":"97","3":"Width","4":"1.3","5":"2.9"},{"1":"versicolor","2":"98","3":"Length","4":"4.3","5":"6.2"},{"1":"versicolor","2":"98","3":"Width","4":"1.3","5":"2.9"},{"1":"versicolor","2":"99","3":"Length","4":"3.0","5":"5.1"},{"1":"versicolor","2":"99","3":"Width","4":"1.1","5":"2.5"},{"1":"versicolor","2":"100","3":"Length","4":"4.1","5":"5.7"},{"1":"versicolor","2":"100","3":"Width","4":"1.3","5":"2.8"},{"1":"virginica","2":"101","3":"Length","4":"6.0","5":"6.3"},{"1":"virginica","2":"101","3":"Width","4":"2.5","5":"3.3"},{"1":"virginica","2":"102","3":"Length","4":"5.1","5":"5.8"},{"1":"virginica","2":"102","3":"Width","4":"1.9","5":"2.7"},{"1":"virginica","2":"103","3":"Length","4":"5.9","5":"7.1"},{"1":"virginica","2":"103","3":"Width","4":"2.1","5":"3.0"},{"1":"virginica","2":"104","3":"Length","4":"5.6","5":"6.3"},{"1":"virginica","2":"104","3":"Width","4":"1.8","5":"2.9"},{"1":"virginica","2":"105","3":"Length","4":"5.8","5":"6.5"},{"1":"virginica","2":"105","3":"Width","4":"2.2","5":"3.0"},{"1":"virginica","2":"106","3":"Length","4":"6.6","5":"7.6"},{"1":"virginica","2":"106","3":"Width","4":"2.1","5":"3.0"},{"1":"virginica","2":"107","3":"Length","4":"4.5","5":"4.9"},{"1":"virginica","2":"107","3":"Width","4":"1.7","5":"2.5"},{"1":"virginica","2":"108","3":"Length","4":"6.3","5":"7.3"},{"1":"virginica","2":"108","3":"Width","4":"1.8","5":"2.9"},{"1":"virginica","2":"109","3":"Length","4":"5.8","5":"6.7"},{"1":"virginica","2":"109","3":"Width","4":"1.8","5":"2.5"},{"1":"virginica","2":"110","3":"Length","4":"6.1","5":"7.2"},{"1":"virginica","2":"110","3":"Width","4":"2.5","5":"3.6"},{"1":"virginica","2":"111","3":"Length","4":"5.1","5":"6.5"},{"1":"virginica","2":"111","3":"Width","4":"2.0","5":"3.2"},{"1":"virginica","2":"112","3":"Length","4":"5.3","5":"6.4"},{"1":"virginica","2":"112","3":"Width","4":"1.9","5":"2.7"},{"1":"virginica","2":"113","3":"Length","4":"5.5","5":"6.8"},{"1":"virginica","2":"113","3":"Width","4":"2.1","5":"3.0"},{"1":"virginica","2":"114","3":"Length","4":"5.0","5":"5.7"},{"1":"virginica","2":"114","3":"Width","4":"2.0","5":"2.5"},{"1":"virginica","2":"115","3":"Length","4":"5.1","5":"5.8"},{"1":"virginica","2":"115","3":"Width","4":"2.4","5":"2.8"},{"1":"virginica","2":"116","3":"Length","4":"5.3","5":"6.4"},{"1":"virginica","2":"116","3":"Width","4":"2.3","5":"3.2"},{"1":"virginica","2":"117","3":"Length","4":"5.5","5":"6.5"},{"1":"virginica","2":"117","3":"Width","4":"1.8","5":"3.0"},{"1":"virginica","2":"118","3":"Length","4":"6.7","5":"7.7"},{"1":"virginica","2":"118","3":"Width","4":"2.2","5":"3.8"},{"1":"virginica","2":"119","3":"Length","4":"6.9","5":"7.7"},{"1":"virginica","2":"119","3":"Width","4":"2.3","5":"2.6"},{"1":"virginica","2":"120","3":"Length","4":"5.0","5":"6.0"},{"1":"virginica","2":"120","3":"Width","4":"1.5","5":"2.2"},{"1":"virginica","2":"121","3":"Length","4":"5.7","5":"6.9"},{"1":"virginica","2":"121","3":"Width","4":"2.3","5":"3.2"},{"1":"virginica","2":"122","3":"Length","4":"4.9","5":"5.6"},{"1":"virginica","2":"122","3":"Width","4":"2.0","5":"2.8"},{"1":"virginica","2":"123","3":"Length","4":"6.7","5":"7.7"},{"1":"virginica","2":"123","3":"Width","4":"2.0","5":"2.8"},{"1":"virginica","2":"124","3":"Length","4":"4.9","5":"6.3"},{"1":"virginica","2":"124","3":"Width","4":"1.8","5":"2.7"},{"1":"virginica","2":"125","3":"Length","4":"5.7","5":"6.7"},{"1":"virginica","2":"125","3":"Width","4":"2.1","5":"3.3"},{"1":"virginica","2":"126","3":"Length","4":"6.0","5":"7.2"},{"1":"virginica","2":"126","3":"Width","4":"1.8","5":"3.2"},{"1":"virginica","2":"127","3":"Length","4":"4.8","5":"6.2"},{"1":"virginica","2":"127","3":"Width","4":"1.8","5":"2.8"},{"1":"virginica","2":"128","3":"Length","4":"4.9","5":"6.1"},{"1":"virginica","2":"128","3":"Width","4":"1.8","5":"3.0"},{"1":"virginica","2":"129","3":"Length","4":"5.6","5":"6.4"},{"1":"virginica","2":"129","3":"Width","4":"2.1","5":"2.8"},{"1":"virginica","2":"130","3":"Length","4":"5.8","5":"7.2"},{"1":"virginica","2":"130","3":"Width","4":"1.6","5":"3.0"},{"1":"virginica","2":"131","3":"Length","4":"6.1","5":"7.4"},{"1":"virginica","2":"131","3":"Width","4":"1.9","5":"2.8"},{"1":"virginica","2":"132","3":"Length","4":"6.4","5":"7.9"},{"1":"virginica","2":"132","3":"Width","4":"2.0","5":"3.8"},{"1":"virginica","2":"133","3":"Length","4":"5.6","5":"6.4"},{"1":"virginica","2":"133","3":"Width","4":"2.2","5":"2.8"},{"1":"virginica","2":"134","3":"Length","4":"5.1","5":"6.3"},{"1":"virginica","2":"134","3":"Width","4":"1.5","5":"2.8"},{"1":"virginica","2":"135","3":"Length","4":"5.6","5":"6.1"},{"1":"virginica","2":"135","3":"Width","4":"1.4","5":"2.6"},{"1":"virginica","2":"136","3":"Length","4":"6.1","5":"7.7"},{"1":"virginica","2":"136","3":"Width","4":"2.3","5":"3.0"},{"1":"virginica","2":"137","3":"Length","4":"5.6","5":"6.3"},{"1":"virginica","2":"137","3":"Width","4":"2.4","5":"3.4"},{"1":"virginica","2":"138","3":"Length","4":"5.5","5":"6.4"},{"1":"virginica","2":"138","3":"Width","4":"1.8","5":"3.1"},{"1":"virginica","2":"139","3":"Length","4":"4.8","5":"6.0"},{"1":"virginica","2":"139","3":"Width","4":"1.8","5":"3.0"},{"1":"virginica","2":"140","3":"Length","4":"5.4","5":"6.9"},{"1":"virginica","2":"140","3":"Width","4":"2.1","5":"3.1"},{"1":"virginica","2":"141","3":"Length","4":"5.6","5":"6.7"},{"1":"virginica","2":"141","3":"Width","4":"2.4","5":"3.1"},{"1":"virginica","2":"142","3":"Length","4":"5.1","5":"6.9"},{"1":"virginica","2":"142","3":"Width","4":"2.3","5":"3.1"},{"1":"virginica","2":"143","3":"Length","4":"5.1","5":"5.8"},{"1":"virginica","2":"143","3":"Width","4":"1.9","5":"2.7"},{"1":"virginica","2":"144","3":"Length","4":"5.9","5":"6.8"},{"1":"virginica","2":"144","3":"Width","4":"2.3","5":"3.2"},{"1":"virginica","2":"145","3":"Length","4":"5.7","5":"6.7"},{"1":"virginica","2":"145","3":"Width","4":"2.5","5":"3.3"},{"1":"virginica","2":"146","3":"Length","4":"5.2","5":"6.7"},{"1":"virginica","2":"146","3":"Width","4":"2.3","5":"3.0"},{"1":"virginica","2":"147","3":"Length","4":"5.0","5":"6.3"},{"1":"virginica","2":"147","3":"Width","4":"1.9","5":"2.5"},{"1":"virginica","2":"148","3":"Length","4":"5.2","5":"6.5"},{"1":"virginica","2":"148","3":"Width","4":"2.0","5":"3.0"},{"1":"virginica","2":"149","3":"Length","4":"5.4","5":"6.2"},{"1":"virginica","2":"149","3":"Width","4":"2.3","5":"3.4"},{"1":"virginica","2":"150","3":"Length","4":"5.1","5":"5.9"},{"1":"virginica","2":"150","3":"Width","4":"1.8","5":"3.0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[6],"max":[6]},"pages":{}}}
+  </script>
+</div>
+</div>
+<h2 id="gather-group_by-summarize"><code>gather</code> + <code>group_by</code> + <code>summarize</code></h2>
+<p>By combining the power of <code>tidy data</code> and our <code>dplyr</code> verbs, we can generate complex analyses in a few rows of code.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+iris %&gt;%
+  gather(var, value, -Species) %&gt;%
+  group_by(Species, var) %&gt;%
+  summarise(stat = paste0(
+    round(mean(value), 1), &quot; (&quot;, round(sd(value), 1), &quot;)&quot;
+  )) %&gt;%
+  paged_table(options = list(rows.print = 6))</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Species"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["var"],"name":[2],"type":["chr"],"align":["left"]},{"label":["stat"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"setosa","2":"Petal.Length","3":"1.5 (0.2)"},{"1":"setosa","2":"Petal.Width","3":"0.2 (0.1)"},{"1":"setosa","2":"Sepal.Length","3":"5 (0.4)"},{"1":"setosa","2":"Sepal.Width","3":"3.4 (0.4)"},{"1":"versicolor","2":"Petal.Length","3":"4.3 (0.5)"},{"1":"versicolor","2":"Petal.Width","3":"1.3 (0.2)"},{"1":"versicolor","2":"Sepal.Length","3":"5.9 (0.5)"},{"1":"versicolor","2":"Sepal.Width","3":"2.8 (0.3)"},{"1":"virginica","2":"Petal.Length","3":"5.6 (0.6)"},{"1":"virginica","2":"Petal.Width","3":"2 (0.3)"},{"1":"virginica","2":"Sepal.Length","3":"6.6 (0.6)"},{"1":"virginica","2":"Sepal.Width","3":"3 (0.3)"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[6],"max":[6]},"pages":{}}}
+  </script>
+</div>
+</div>
+<p>After some quick conversion, we can easily turn them into some printable table.</p>
+<div class="layout-chunk" data-layout="l-body">
+
+<pre class="r"><code>
+iris %&gt;%
+  gather(var, value, -Species) %&gt;%
+  group_by(Species, var) %&gt;%
+  summarise(stat = paste0(
+    round(mean(value), 1), &quot; (&quot;, round(sd(value), 1), &quot;)&quot;
+  )) %&gt;%
+  spread(var, stat) %&gt;%
+  qtable()</code></pre>
+<table class="table table-striped table-hover table-condensed" style="width: auto !important; ">
+<thead>
+<tr>
+<th style="text-align:left;">
+Species
+</th>
+<th style="text-align:left;">
+Petal.Length
+</th>
+<th style="text-align:left;">
+Petal.Width
+</th>
+<th style="text-align:left;">
+Sepal.Length
+</th>
+<th style="text-align:left;">
+Sepal.Width
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+setosa
+</td>
+<td style="text-align:left;">
+1.5 (0.2)
+</td>
+<td style="text-align:left;">
+0.2 (0.1)
+</td>
+<td style="text-align:left;">
+5 (0.4)
+</td>
+<td style="text-align:left;">
+3.4 (0.4)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+versicolor
+</td>
+<td style="text-align:left;">
+4.3 (0.5)
+</td>
+<td style="text-align:left;">
+1.3 (0.2)
+</td>
+<td style="text-align:left;">
+5.9 (0.5)
+</td>
+<td style="text-align:left;">
+2.8 (0.3)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+virginica
+</td>
+<td style="text-align:left;">
+5.6 (0.6)
+</td>
+<td style="text-align:left;">
+2 (0.3)
+</td>
+<td style="text-align:left;">
+6.6 (0.6)
+</td>
+<td style="text-align:left;">
+3 (0.3)
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="ending-note">Ending Note</h1>
+<p>There are many other useful tools in <code>dplyr</code> and <code>tidyr</code> that were not covered by this intro. For example, the <code>lag</code> and <code>lead</code> function in <code>dplyr</code> can help you easily calculate the difference between rows… Next time, we are going to check out how to combine the tools we learned today with <code>purrr</code> and <code>broom</code> to quickly generate nice tabulated results from models.</p>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>
