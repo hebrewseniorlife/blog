@@ -10,10 +10,10 @@ description: |
 author:
   - name: Hao Zhu
     url: https://haozhu233.github.io/
-    affiliation: Markus Institute for Aging 
+    affiliation: Marcus Institute for Aging 
     affiliation_url: https://www.marcusinstituteforaging.org/
   - name: Thomas Travison
-    affiliation: Markus Institute for Aging 
+    affiliation: Marcus Institute for Aging 
     affiliation_url: https://www.marcusinstituteforaging.org/
 date: 11-13-2018
 output:

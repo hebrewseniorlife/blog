@@ -1,7 +1,7 @@
 name: "MIFA-blog"
-title: "Markus Institute for Aging Data Science Blog"
+title: "Marcus Institute for Aging Data Science Blog"
 description: |
-  MIFA Data Science Blog
+  Marcus Institute Data Science Blog
 output_dir: "_site"
 navbar:
   right:
