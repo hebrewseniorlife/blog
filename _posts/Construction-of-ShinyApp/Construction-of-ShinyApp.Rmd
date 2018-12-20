@@ -1,0 +1,41 @@
+---
+title: "Construction-of-ShinyApp"
+description: |
+  ShinyApp Series #1 - 
+author:
+  - name: Zhuotian Tang
+    url: https://theaaaa.github.io/
+    affiliation: Marcus Institute for Aging 
+    affiliation_url: https://www.marcusinstituteforaging.org/
+  - name: Hao Zhu
+    url: https://haozhu233.github.io/
+    affiliation: Marcus Institute for Aging 
+    affiliation_url: https://www.marcusinstituteforaging.org/
+  - name: Thomas Travison
+    affiliation: Marcus Institute for Aging 
+    affiliation_url: https://www.marcusinstituteforaging.org/
+date: 11-30-2018
+output:
+  radix::radix_article:
+    self_contained: false
+preview: images/hex-rmarkdown1.png
+draft: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Shiny is an R package that makes it easy to build interactive web applications 
+(apps) straight from R. 
+
+To start creating a Shiny App, you firstly need to install the package:  
+`install.packages("shiny")`  
+`library(shiny)`  
+
+
+
+
+
+
+
