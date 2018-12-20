@@ -1,5 +1,51 @@
 [
   {
+    "path": "posts/Syntax-and-Code-in-rMarkdown/",
+    "title": "Syntax-and-Code-in-rMarkdown",
+    "description": "rMarkdown Series #1 - r-markdown is an extremely useful tool to generate \nacademic articles. While you could write plain text, you are also able to \ninsert code chunks and generate some results to enrich the file. This \narticle will introduce the mostly used, basic but useful syntax and coding \nin rMarkdown.",
+    "author": [
+      {
+        "name": "Zhuotian Tang",
+        "url": "https://theaaaa.github.io/"
+      },
+      {
+        "name": "Hao Zhu",
+        "url": "https://haozhu233.github.io/"
+      },
+      {
+        "name": "Thomas Travison",
+        "url": {}
+      }
+    ],
+    "date": "2018-11-30",
+    "categories": [],
+    "preview": "posts/Syntax-and-Code-in-rMarkdown/images/hex-rmarkdown.png",
+    "last_modified": "2018-12-17T12:05:02-05:00"
+  },
+  {
+    "path": "posts/Construction-of-ShinyApp/",
+    "title": "Construction-of-ShinyApp",
+    "description": "ShinyApp Series #1 - Data transformation and summarization are the foundation\nof any data analyses. In our R community, fortunately, we have a whole set of\ntools in tidyverse to facilitate this process. This article will be the \nfirst of a series of tidyverse tutorials that we are using for our \ninternal training. It covers the 8 fundamental verbs related to data \ntransformation and summarization in dplyr and tidyr.",
+    "author": [
+      {
+        "name": "Zhuotian Tang",
+        "url": "https://theaaaa.github.io/"
+      },
+      {
+        "name": "Hao Zhu",
+        "url": "https://haozhu233.github.io/"
+      },
+      {
+        "name": "Thomas Travison",
+        "url": {}
+      }
+    ],
+    "date": "2018-11-30",
+    "categories": [],
+    "preview": "posts/Construction-of-ShinyApp/images/hex-rmarkdown1.png",
+    "last_modified": "2018-12-10T09:49:48-05:00"
+  },
+  {
     "path": "posts/8-verbs-in-tidyverse/",
     "title": "8 verbs in tidyverse",
     "description": "Tidyverse Series #1 - Data transformation and summarization are the foundation\nof any data analyses. In our R community, fortunately, we have a whole set of\ntools in tidyverse to facilitate this process. This article will be the \nfirst of a series of tidyverse tutorials that we are using for our \ninternal training. It covers the 8 fundamental verbs related to data \ntransformation and summarization in dplyr and tidyr.",
@@ -16,6 +62,6 @@
     "date": "2018-11-13",
     "categories": [],
     "preview": "posts/8-verbs-in-tidyverse/images/tidyverse-default.png",
-    "last_modified": "2018-11-19T17:12:09-05:00"
+    "last_modified": "2018-11-30T14:27:43-05:00"
   }
 ]
